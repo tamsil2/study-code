@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  me.kobeshow.demofamilymanprep.FamilyManAutoConfiguration

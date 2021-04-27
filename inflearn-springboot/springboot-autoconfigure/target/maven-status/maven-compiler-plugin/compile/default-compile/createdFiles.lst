@@ -1,0 +1,5 @@
+META-INF/spring-autoconfigure-metadata.properties
+META-INF/spring-configuration-metadata.json
+com/tamsil/HolomanConfiguration.class
+com/tamsil/HolomanProperties.class
+com/tamsil/Holoman.class
