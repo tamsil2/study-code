@@ -1,12 +1,9 @@
 package jpa.ex1;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
-//@Entity
-public class Locker {
+@Entity
+public class Child {
 
     @Id
     @GeneratedValue
@@ -14,8 +11,9 @@ public class Locker {
 
     private String name;
 
-    @OneToOne(mappedBy = "locker")
-    private Member member;
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Parent parent;
 
     public Long getId() {
         return id;
@@ -31,5 +29,13 @@ public class Locker {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Parent getParent() {
+        return parent;
+    }
+
+    public void setParent(Parent parent) {
+        this.parent = parent;
     }
 }
