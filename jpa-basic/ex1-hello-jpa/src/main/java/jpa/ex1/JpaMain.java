@@ -1,10 +1,11 @@
 package jpa.ex1;
 
-import org.hibernate.Hibernate;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -13,30 +14,29 @@ public class JpaMain {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         try {
-            Team teamA = new Team();
-            teamA.setName("teamA");
-            em.persist(teamA);
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(new Address("city1", "street", "10000"));
 
-            Team teamB = new Team();
-            teamB.setName("teamB");
-            em.persist(teamB);
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
 
-            Member member1 = new Member();
-            member1.setUsername("member1");
-            member1.setTeam(teamA);
-            em.persist(member1);
-
-            Member member2 = new Member();
-            member2.setUsername("member2");
-            member2.setTeam(teamB);
-            em.persist(member2);
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            Member member = em.find(Member.class, member1.getId());
+            System.out.println("============== START ==================");
+            Member findMember = em.find(Member.class, member.getId());
 
-            List<Member> members = em.createQuery("select m from Member m join fetch m.team", Member.class).getResultList();
+            Address homeAddress = findMember.getHomeAddress();
+            findMember.setHomeAddress(new Address("newCity", homeAddress.getStreet(), homeAddress.getZipcode()));
+
+            // 치킨 -> 한식
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();

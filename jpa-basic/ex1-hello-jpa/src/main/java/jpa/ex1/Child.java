@@ -2,7 +2,7 @@ package jpa.ex1;
 
 import javax.persistence.*;
 
-@Entity
+//@Entity
 public class Child {
 
     @Id
@@ -11,9 +11,9 @@ public class Child {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Parent parent;
+//    @ManyToOne
+//    @JoinColumn(name = "parent_id")
+//    private Parent parent;
 
     public Long getId() {
         return id;
@@ -31,11 +31,4 @@ public class Child {
         this.name = name;
     }
 
-    public Parent getParent() {
-        return parent;
-    }
-
-    public void setParent(Parent parent) {
-        this.parent = parent;
-    }
 }

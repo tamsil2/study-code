@@ -1,9 +1,6 @@
 package jpa.ex1;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +13,13 @@ public class Parent {
 
     private String name;
 
-    @OneToMany(mappedBy = "parent")
-    private List<Child> childList = new ArrayList<>();
-
-    public void addChild(Child child) {
-        childList.add(child);
-        child.setParent(this);
-    }
+//    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE, orphanRemoval = true)
+//    private List<Child> childList = new ArrayList<>();
+//
+//    public void addChild(Child child) {
+//        childList.add(child);
+//        child.setParent(this);
+//    }
 
     public Long getId() {
         return id;
@@ -40,11 +37,11 @@ public class Parent {
         this.name = name;
     }
 
-    public List<Child> getChildList() {
-        return childList;
-    }
-
-    public void setChildList(List<Child> childList) {
-        this.childList = childList;
-    }
+//    public List<Child> getChildList() {
+//        return childList;
+//    }
+//
+//    public void setChildList(List<Child> childList) {
+//        this.childList = childList;
+//    }
 }
