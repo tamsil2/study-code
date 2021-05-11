@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE_USE)
-@Repeatable(value = ChickenContainer.class)
+@Repeatable(ChickenContainer.class)
 public @interface Chicken {
     String value();
 }

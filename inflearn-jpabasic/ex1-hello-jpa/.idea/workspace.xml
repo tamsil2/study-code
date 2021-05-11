@@ -4,92 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b244ab-056e-4778-9f6b-088ec64ca2c6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex1-hello-jpa.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Address.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/AddressEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Album.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/BaseEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Book.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Child.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Item.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/JpaMain.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Locker.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Member.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/MemberProduct.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Movie.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Parent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Period.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Product.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jpa/ex1/Team.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/persistence.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Address.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Album.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/BaseEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Book.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Child.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Item.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/JpaMain.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Locker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Member.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/MemberProduct.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Movie.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Parent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Period.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Product.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/jpa/ex1/Team.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/.idea/jpashop.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/jpashop.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/JpaMain.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/Address.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/Album.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/BaseEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/Book.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/Category.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/Delivery.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/DeliveryStatus.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/Item.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/Member.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/Movie.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/Order.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/OrderItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/java/jpabook/jpashop/domain/OrderStatus.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/src/main/resources/META-INF/persistence.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/META-INF/persistence.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/JpaMain.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/Address.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/Album.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/BaseEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/Book.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/Category.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/Delivery.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/DeliveryStatus.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/Item.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/Member.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/Movie.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/Order.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/OrderItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/classes/jpabook/jpashop/domain/OrderStatus.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/jpashop-1.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../jpashop/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-    </list>
+    <list default="true" id="44b244ab-056e-4778-9f6b-088ec64ca2c6" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,17 +72,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.JpaMain" />
@@ -193,6 +97,7 @@
       <workItem from="1619912550703" duration="1293000" />
       <workItem from="1619917475819" duration="5351000" />
       <workItem from="1620047466205" duration="107000" />
+      <workItem from="1620682075884" duration="26000" />
     </task>
     <servers />
   </component>
