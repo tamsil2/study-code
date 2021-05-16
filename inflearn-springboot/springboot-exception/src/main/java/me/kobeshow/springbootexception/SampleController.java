@@ -14,11 +14,11 @@ public class SampleController {
         throw new SampleException();
     }
 
-//    @ExceptionHandler(SampleException.class)
-//    public @ResponseBody AppError sampleError(SampleException e) {
-//        AppError appError = new AppError();
-//        appError.setMessage("error.app.key");
-//        appError.setReason("IDK IDK IDK");
-//        return appError;
-//    }
+    @ExceptionHandler(SampleException.class)
+    public @ResponseBody AppError sampleError(SampleException e) {
+        AppError appError = new AppError();
+        appError.setMessage("error.app.key");
+        appError.setReason("IDK IDK IDK");
+        return appError;
+    }
 }

@@ -1,5 +1,6 @@
 package me.kobeshow.springbootthymeleaf;
 
+import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlHeading1;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -46,7 +47,7 @@ public class SampleControllerTest {
     }
 
     @Test
-    public void hello2() throws Exception {
+    public void htmlUnitTest() throws Exception {
         HtmlPage page = webClient.getPage("/hello");
         HtmlHeading1 h1 = page.getFirstByXPath("//h1");
         assertThat(h1.getTextContent()).isEqualToIgnoringCase("tamsil");
