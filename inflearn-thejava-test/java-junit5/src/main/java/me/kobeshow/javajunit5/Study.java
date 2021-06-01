@@ -1,6 +1,7 @@
 package me.kobeshow.javajunit5;
 
 public class Study {
+
     private StudyStatus status;
 
     private int limit;
