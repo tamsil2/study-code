@@ -15,6 +15,9 @@ public class Member {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
+
     public Long getId() {
         return id;
     }
