@@ -1,6 +1,8 @@
 package me.kobeshow.springbootjpashop.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.kobeshow.springbootjpashop.domain.item.Item;
 
@@ -8,6 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
 
     @Id @GeneratedValue
