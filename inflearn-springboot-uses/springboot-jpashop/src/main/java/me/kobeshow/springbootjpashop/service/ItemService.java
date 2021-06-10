@@ -1,6 +1,7 @@
 package me.kobeshow.springbootjpashop.service;
 
 import lombok.RequiredArgsConstructor;
+import me.kobeshow.springbootjpashop.domain.item.Book;
 import me.kobeshow.springbootjpashop.domain.item.Item;
 import me.kobeshow.springbootjpashop.repository.ItemRepository;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,14 @@ public class ItemService {
     @Transactional
     public void saveItem(Item item) {
         itemRepository.save(item);
+    }
+
+    @Transactional
+    public void updateItem(Long itemId, String name, int price, int stockQuantity) {
+        Item findItem = itemRepository.findOne(itemId);
+        findItem.setName(name);
+        findItem.setPrice(price);
+        findItem.setStockQuantity(stockQuantity);
     }
 
     public List<Item> findItems() {
