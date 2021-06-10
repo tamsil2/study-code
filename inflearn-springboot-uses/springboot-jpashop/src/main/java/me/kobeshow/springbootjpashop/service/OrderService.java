@@ -9,6 +9,7 @@ import me.kobeshow.springbootjpashop.domain.item.Item;
 import me.kobeshow.springbootjpashop.repository.ItemRepository;
 import me.kobeshow.springbootjpashop.repository.MemberRepository;
 import me.kobeshow.springbootjpashop.repository.OrderRepository;
+import me.kobeshow.springbootjpashop.repository.OrderSearch;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +57,7 @@ public class OrderService {
     }
 
     // 검색
-//    public List<Order> findOrders(OrderSearch orderSearch) {
-//        return orderRepository.findAll(orderSearch);
-//    }
+    public List<Order> findOrders(OrderSearch orderSearch) {
+        return orderRepository.findAllByString(orderSearch);
+    }
 }

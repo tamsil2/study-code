@@ -2,13 +2,15 @@ package me.kobeshow.springbootjpashop.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.kobeshow.springbootjpashop.domain.Member;
+import me.kobeshow.springbootjpashop.domain.Order;
 import me.kobeshow.springbootjpashop.domain.item.Item;
+import me.kobeshow.springbootjpashop.repository.OrderSearch;
 import me.kobeshow.springbootjpashop.service.ItemService;
 import me.kobeshow.springbootjpashop.service.MemberService;
 import me.kobeshow.springbootjpashop.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.xml.bind.annotation.XmlElementDecl;
 import java.util.List;
@@ -30,5 +32,27 @@ public class OrderController {
         model.addAttribute("items", items);
 
         return "order/orderForm";
+    }
+
+    @PostMapping("/order")
+    public String order(@RequestParam("memberId") Long memberId,
+                        @RequestParam("itemId") Long itemId,
+                        @RequestParam("count") int count) {
+        orderService.order(memberId, itemId, count);
+        return "redirect:/orders";
+    }
+
+    @GetMapping("/orders")
+    public String orderList(@ModelAttribute("orderSearch")OrderSearch orderSearch, Model model) {
+        List<Order> orders = orderService.findOrders(orderSearch);
+        model.addAttribute("orders", orders);
+
+        return "order/orderList";
+    }
+
+    @PostMapping("/orders/{orderId}/cancel")
+    public String cancelOrder(@PathVariable("orderId") Long orderId) {
+        orderService.cancelOrder(orderId);
+        return "redirect:/orders";
     }
 }
