@@ -1,7 +1,12 @@
 package me.kobeshow.springbootjpashop.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import me.kobeshow.springbootjpashop.domain.Order;
+import me.kobeshow.springbootjpashop.domain.OrderStatus;
+import me.kobeshow.springbootjpashop.domain.QMember;
+import me.kobeshow.springbootjpashop.domain.QOrder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -10,6 +15,9 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static me.kobeshow.springbootjpashop.domain.QMember.*;
+import static me.kobeshow.springbootjpashop.domain.QOrder.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -130,5 +138,24 @@ public class OrderRepository {
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
+    }
+
+    public List<Order> findAll(OrderSearch orderSearch) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
+        return queryFactory
+                .select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()), member.name.like(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private BooleanExpression statusEq(OrderStatus status) {
+        if (status == null) {
+            return null;
+        }
+        return order.status.eq(status);
     }
 }

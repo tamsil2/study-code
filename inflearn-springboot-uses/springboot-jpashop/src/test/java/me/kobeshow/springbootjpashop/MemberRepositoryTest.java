@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MemberRepositoryTest {
 
 //    @Autowired
-//    MemberRepository memberRepository;
+//    MemberRepositoryOld memberRepository;
 //
 //    @Test
 //    @Transactional
