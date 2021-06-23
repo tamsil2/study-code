@@ -1,17 +1,15 @@
 package me.kobeshow.springbootproject.domain;
 
+import java.time.LocalDate;
+
 public class User {
-    String id;
-    String name;
-    String password;
-
-    private static final int BASIC = 1;
-    private static final int SILVER = 2;
-    private static final int GOLD = 3;
-
-    Level level;
-    int login;
-    int recommend;
+    private String id;
+    private String name;
+    private String password;
+    private Level level;
+    private int login;
+    private int recommend;
+    private LocalDate lastUpgraded;
 
     public User() {
     }
@@ -23,6 +21,16 @@ public class User {
         this.level = level;
         this.login = login;
         this.recommend = recommend;
+    }
+
+    public void upgradeLevel() {
+        Level nextLevel = this.level.nextLevel();
+        if (nextLevel == null) {
+            throw new IllegalStateException(this.level + " 은 업그레이드가 불가능합니다.");
+        } else {
+            this.level = nextLevel;
+        }
+        this.lastUpgraded = LocalDate.now();
     }
 
     public int getLogin() {
