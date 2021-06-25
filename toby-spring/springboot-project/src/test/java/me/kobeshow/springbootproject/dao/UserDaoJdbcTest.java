@@ -23,6 +23,7 @@ class UserDaoJdbcTest {
         user.setLevel(Level.BASIC);
         user.setLogin(1);
         user.setRecommend(1);
+        user.setEmail("test1@email.com");
 
         userDao.add(user);
     }

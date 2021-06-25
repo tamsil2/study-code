@@ -4,12 +4,12 @@ import me.kobeshow.springbootproject.dao.UserDao;
 import me.kobeshow.springbootproject.domain.Level;
 import me.kobeshow.springbootproject.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -22,14 +22,17 @@ public class UserService {
     private UserDao userDao;
 
     @Autowired
-    private DataSource dataSource;
+    private PlatformTransactionManager transactionManager;
+
+    @Autowired
+    private MailSender mailSender;
+
+    public void setTransactionManager(PlatformTransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
+    }
 
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
     }
 
     public void add(User user) {
@@ -40,9 +43,7 @@ public class UserService {
     }
 
     public void upgradeLevels() throws SQLException {
-        TransactionSynchronizationManager.initSynchronization();
-        Connection c = DataSourceUtils.getConnection(dataSource);
-        c.setAutoCommit(false);
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
 
         try {
             List<User> users = userDao.getAll();
@@ -51,16 +52,19 @@ public class UserService {
                     upgradeLevel(user);
                 }
             }
-            c.commit();
+            transactionManager.commit(status);
         } catch (Exception e) {
-            c.rollback();
+            transactionManager.rollback(status);
             throw e;
-        } finally {
-            DataSourceUtils.releaseConnection(c, dataSource);
-            TransactionSynchronizationManager.unbindResource(this.dataSource);
-            TransactionSynchronizationManager.clearSynchronization();
         }
     }
+
+    protected void upgradeLevel(User user) {
+        user.upgradeLevel();
+        userDao.update(user);
+    }
+
+
 
     private boolean canUpgradeLevel(User user) {
         Level currrentLevel = user.getLevel();
@@ -74,10 +78,5 @@ public class UserService {
             default:
                 throw new IllegalArgumentException("Unknown Level: " + currrentLevel);
         }
-    }
-
-    protected void upgradeLevel(User user) {
-        user.upgradeLevel();
-        userDao.update(user);
     }
 }
