@@ -114,8 +114,8 @@ class MemberRepositoryTest {
 
         QMember member = QMember.member;
         Iterable<Member> result = memberRepository.findAll(member.age.between(10, 40).and(member.username.eq("member1")));
-        for (Member member5 : result) {
-            System.out.println("member5 = " + member5);
+        for (Member findMember : result) {
+            System.out.println("findMember = " + findMember);
         }
     }
 }
