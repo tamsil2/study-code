@@ -8,10 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +33,9 @@ class UserServiceTest {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    MailSender mailSender;
 
     @Autowired
     UserDao userDao;
@@ -64,11 +72,15 @@ class UserServiceTest {
     }
 
     @Test
+    @DirtiesContext
     public void upgradeLevelsTest() throws SQLException {
         userDao.deleteAll();
         for (User user : users) {
             userDao.add(user);
         }
+
+        MockMailSender mockMailSender = new MockMailSender();
+        userService.setMailSender(mockMailSender);
 
         userService.upgradeLevels();
 
@@ -77,6 +89,11 @@ class UserServiceTest {
         checkLevelUpgraded(users.get(2), false);
         checkLevelUpgraded(users.get(3), true);
         checkLevelUpgraded(users.get(4), false);
+
+        List<String> requests = mockMailSender.getRequests();
+        assertThat(requests.size()).isEqualTo(2);
+        assertThat(requests.get(0)).isEqualTo(users.get(1).getEmail());
+        assertThat(requests.get(1)).isEqualTo(users.get(3).getEmail());
     }
 
     @Test
@@ -91,7 +108,8 @@ class UserServiceTest {
 
         try {
             testUserService.upgradeLevels();
-            fail("TestUserServiceException expexted");
+            testUserService.setMailSender(mailSender);
+            fail("TestUserServiceException expected");
         } catch (TestUserServiceException | SQLException e) {
         }
 
@@ -123,6 +141,22 @@ class UserServiceTest {
         protected void upgradeLevel(User user) {
             if (user.getId().equals(this.id)) throw new TestUserServiceException();
             super.upgradeLevel(user);
+        }
+    }
+
+    static class MockMailSender implements MailSender {
+        private List<String> requests = new ArrayList<>();
+
+        public List<String> getRequests() {
+            return requests;
+        }
+
+        public void send(SimpleMailMessage mailMessage) throws MailException {
+            requests.add(mailMessage.getTo()[0]);
+        }
+
+        public void send(SimpleMailMessage[] mailMessages) throws MailException {
+
         }
     }
 

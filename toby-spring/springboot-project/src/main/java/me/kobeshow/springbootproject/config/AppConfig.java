@@ -1,6 +1,7 @@
 package me.kobeshow.springbootproject.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import me.kobeshow.springbootproject.service.DummyMailSender;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -19,10 +20,15 @@ public class AppConfig {
         return new DataSourceTransactionManager(dataSource);
     }
 
+//    @Bean
+//    public MailSender mailSender() {
+//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+//        mailSender.setHost("mail.server.com");
+//        return mailSender;
+//    }
+
     @Bean
     public MailSender mailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("mail.server.com");
-        return mailSender;
+        return new DummyMailSender();
     }
 }
