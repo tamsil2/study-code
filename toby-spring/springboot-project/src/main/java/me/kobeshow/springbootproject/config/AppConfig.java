@@ -7,6 +7,7 @@ import me.kobeshow.springbootproject.factorybean.MessageFactoryBean;
 import me.kobeshow.springbootproject.service.DummyMailSender;
 import me.kobeshow.springbootproject.service.TestUserServiceImpl;
 import me.kobeshow.springbootproject.service.UserServiceImpl;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -66,11 +67,18 @@ public class AppConfig {
         return advice;
     }
 
+//    @Bean
+//    public NameMatchClassMethodPointcut transactionPointcut() {
+//        NameMatchClassMethodPointcut pointcut = new NameMatchClassMethodPointcut();
+//        pointcut.setMappedClassName("*serviceImpl");
+//        pointcut.setMappedName("upgrade*");
+//        return pointcut;
+//    }
+
     @Bean
-    public NameMatchClassMethodPointcut transactionPointcut() {
-        NameMatchClassMethodPointcut pointcut = new NameMatchClassMethodPointcut();
-        pointcut.setMappedClassName("*serviceImpl");
-        pointcut.setMappedName("upgrade*");
+    public AspectJExpressionPointcut transactionPointcut() {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("execution(* *..*ServiceImpl.upgrade*(..))");
         return pointcut;
     }
 
