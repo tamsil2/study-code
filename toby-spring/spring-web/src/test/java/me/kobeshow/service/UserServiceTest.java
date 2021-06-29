@@ -122,6 +122,11 @@ class UserServiceTest {
         assertThat(testUserService).isEqualTo(java.lang.reflect.Proxy.class);
     }
 
+    @Test
+    public void readOnlyTransactionAttribute() {
+        testUserService.getAll();
+    }
+
     private void checkLevelUpgraded(User user, boolean upgraded) {
         User userUpdate = userDao.get(user.getId());
         if (upgraded) {

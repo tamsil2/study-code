@@ -2,10 +2,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans.xsd
-    http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context.xsd">
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="me.kobeshow"/>
@@ -36,22 +42,50 @@
         <property name="text" value="Factory Bean"/>
     </bean>
 
-    <bean id="transactionAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
-        <property name="advice" ref="transactionAdvice"/>
-        <property name="pointcut" ref="transactionPointcut"/>
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true" />
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <bean id="transactionAdvice" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="transactionAttributes">
+            <props>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
     </bean>
 
-    <bean id="transactionAdvice" class="me.kobeshow.proxy.TransactionAdvice">
-        <property name="transactionManager" ref="transactionManager"/>
-    </bean>
+    <aop:config>
+        <aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" />
+    </aop:config>
+
+<!--    <bean id="transactionAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">-->
+<!--        <property name="advice" ref="transactionAdvice"/>-->
+<!--        <property name="pointcut" ref="transactionPointcut"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="transactionAdvice" class="org.springframework.transaction.interceptor.TransactionInterceptor">-->
+<!--        <property name="transactionManager" ref="transactionManager"/>-->
+<!--        <property name="transactionAttributes">-->
+<!--            <props>-->
+<!--                <prop key="get*">PROPAGATION_REQUIRED,readOnly,timeout_30</prop>-->
+<!--                <prop key="upgrade*">PROPAGATION_REQUIRES_NEW,ISOLATION_SERIALIZABLE</prop>-->
+<!--                <prop key="*">PROPAGATION_REQUIRED</prop>-->
+<!--            </props>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+<!--    <aop:config>-->
+<!--        <aop:advisor advice-ref="transactionAdvice" pointcut="execution(* *..*ServiceImpl.upgrade*(..))" />-->
+    <!--    </aop:config>-->
+
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="transactionPointcut" class="org.springframework.aop.support.NameMatchMethodPointcut">
-<!--        <property name="classFilter" value="*ServiceImpl" />-->
-        <property name="mappedName" value="upgrade*" />
     </bean>
 
     <bean id="userDao" class="me.kobeshow.dao.UserDaoJdbc" />
