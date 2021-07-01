@@ -13,8 +13,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,7 +33,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "classpath:/applicationContext.xml")
+@Transactional
 class UserServiceTest {
+
+    @Autowired
+    PlatformTransactionManager transactionManager;
 
     @Autowired
     @Qualifier("userServiceImpl")
@@ -125,6 +134,14 @@ class UserServiceTest {
     @Test
     public void readOnlyTransactionAttribute() {
         testUserService.getAll();
+    }
+
+    @Test
+    @Transactional
+    public void transactionSync() {
+        userService.deleteAll();
+        userService.add(users.get(0));
+        userService.add(users.get(1));
     }
 
     private void checkLevelUpgraded(User user, boolean upgraded) {
