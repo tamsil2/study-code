@@ -5,15 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f240240-0f12-477b-a56c-b1c0c161c908" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/kobeshow/service/SqlRetrievalFailureException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/kobeshow/service/SqlService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/kobeshow/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/kobeshow/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/kobeshow/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/kobeshow/dao/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/kobeshow/dao/UserDaoJdbc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/kobeshow/dao/UserDaoJdbc.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/me/kobeshow/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/me/kobeshow/service/UserServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -45,7 +55,7 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RunManager" selected="JUnit.UserServiceTest.transactionSync">
+  <component name="RunManager" selected="JUnit.UserServiceTest.addTest">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -89,6 +99,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserServiceTest.addTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="spring-web" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="me.kobeshow.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="me.kobeshow.service" />
+      <option name="MAIN_CLASS_NAME" value="me.kobeshow.service.UserServiceTest" />
+      <option name="METHOD_NAME" value="addTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="UserServiceTest.readOnlyTransactionAttribute" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="spring-web" />
       <extension name="coverage">
@@ -123,6 +149,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UserServiceTest.addTest" />
         <item itemvalue="JUnit.UserServiceTest.transactionSync" />
         <item itemvalue="JUnit.UserServiceTest.readOnlyTransactionAttribute" />
         <item itemvalue="JUnit.MessageFactoryBeanTest.getMessageFromFactoryBean" />
@@ -140,7 +167,7 @@
       <updated>1624972673156</updated>
       <workItem from="1624972678236" duration="4320000" />
       <workItem from="1625052790131" duration="1247000" />
-      <workItem from="1625141674544" duration="3415000" />
+      <workItem from="1625141674544" duration="5997000" />
     </task>
     <servers />
   </component>

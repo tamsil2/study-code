@@ -5,7 +5,7 @@ import me.kobeshow.domain.User;
 import java.util.List;
 
 public interface UserDao {
-    void add(final User user);
+    void add(final User user) throws Exception;
 
     User get(String id);
 
