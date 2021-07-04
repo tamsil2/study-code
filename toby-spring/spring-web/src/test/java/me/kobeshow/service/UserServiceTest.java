@@ -1,6 +1,5 @@
 package me.kobeshow.service;
 
-import me.kobeshow.dao.MockUserDao;
 import me.kobeshow.dao.UserDao;
 import me.kobeshow.domain.Level;
 import me.kobeshow.domain.User;
@@ -13,13 +12,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,12 +36,7 @@ class UserServiceTest {
     PlatformTransactionManager transactionManager;
 
     @Autowired
-    @Qualifier("userServiceImpl")
-    UserServiceImpl userService;
-
-    @Autowired
-    @Qualifier("testUserServiceImpl")
-    TestUserServiceImpl testUserService;
+    UserService userService;
 
     @Autowired
     MailSender mailSender;
@@ -70,7 +61,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void addTest() {
+    public void addTest() throws Exception {
         userDao.deleteAll();
 
         User userWithLevel = users.get(4);
@@ -88,63 +79,14 @@ class UserServiceTest {
     }
 
     @Test
-    public void upgradeLevelsTest() throws SQLException {
-        UserServiceImpl userServiceImpl = new UserServiceImpl();
-
-        MockUserDao mockUserDao = new MockUserDao(this.users);
-        userServiceImpl.setUserDao(mockUserDao);
-
-        MockMailSender mockMailSender = new MockMailSender();
-        userServiceImpl.setMailSender(mockMailSender);
-
-        userServiceImpl.upgradeLevels();
-
-        List<User> updated = mockUserDao.getUpdated();
-        assertThat(updated.size()).isEqualTo(2);
-        checkUserAndLevel(updated.get(0), "p2", Level.SILVER);
-        checkUserAndLevel(updated.get(1), "p4", Level.GOLD);
-
-        List<String> requests = mockMailSender.getRequests();
-        assertThat(requests.size()).isEqualTo(2);
-        assertThat(requests.get(0)).isEqualTo(users.get(1).getEmail());
-        assertThat(requests.get(1)).isEqualTo(users.get(3).getEmail());
-    }
-
-    @Test
-    public void upgradeAllOrNothing() throws Exception {
-        userDao.deleteAll();
-        for (User user : users) {
-            userDao.add(user);
-        }
-
-        try {
-            testUserService.upgradeLevels();
-            fail("TestUserServiceException expected");
-        } catch (SQLException e) {
-        }
-
-        checkLevelUpgraded(users.get(1), false);
-    }
-
-    @Test
-    public void advisorAutoProxyCreator() {
-        assertThat(testUserService).isEqualTo(java.lang.reflect.Proxy.class);
-    }
-
-    @Test
-    public void readOnlyTransactionAttribute() {
-        testUserService.getAll();
-    }
-
-    @Test
     @Transactional
-    public void transactionSync() {
+    public void transactionSync() throws Exception {
         userService.deleteAll();
         userService.add(users.get(0));
         userService.add(users.get(1));
     }
 
-    private void checkLevelUpgraded(User user, boolean upgraded) {
+    private void checkLevelUpgraded(User user, boolean upgraded) throws Exception {
         User userUpdate = userDao.get(user.getId());
         if (upgraded) {
             assertThat(userUpdate.getLevel()).isEqualTo(user.getLevel().nextLevel());
@@ -158,7 +100,7 @@ class UserServiceTest {
         assertThat(updated.getLevel()).isEqualTo(expectedLevel);
     }
 
-    private void checkLevel(User user, Level expectedLevel) {
+    private void checkLevel(User user, Level expectedLevel) throws Exception {
         User userUpdate = userDao.get(user.getId());
         assertThat(userUpdate.getLevel()).isEqualTo(expectedLevel);
     }

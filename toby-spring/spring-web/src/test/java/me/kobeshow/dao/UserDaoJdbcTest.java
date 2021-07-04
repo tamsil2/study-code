@@ -18,7 +18,7 @@ class UserDaoJdbcTest {
     UserDao userDao;
 
     @Test
-    public void addTest() {
+    public void addTest() throws Exception{
         User user = new User();
         user.setId("sdfsfs");
         user.setName("홍준의");

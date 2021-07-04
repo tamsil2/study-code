@@ -9,14 +9,14 @@ import java.util.List;
 
 @Transactional
 public interface UserService {
-    void add(User user);
-    void deleteAll();
-    void update(User user);
-    void upgradeLevels() throws SQLException;
+    void add(User user) throws Exception;
+    void deleteAll() throws Exception;
+    void update(User user) throws Exception;
+    void upgradeLevels() throws Exception;
 
     @Transactional(readOnly = true)
-    User get(String id);
+    User get(String id) throws Exception;
 
     @Transactional(readOnly = true)
-    List<User> getAll();
+    List<User> getAll() throws Exception;
 }

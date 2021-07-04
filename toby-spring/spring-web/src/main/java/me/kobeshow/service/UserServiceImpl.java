@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void add(User user) {
+    public void add(User user) throws Exception {
         if (user.getLevel() == null) {
             user.setLevel(Level.BASIC);
         }
@@ -41,27 +41,27 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User get(String id) {
+    public User get(String id) throws Exception {
         return userDao.get(id);
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAll() throws Exception {
         return userDao.getAll();
     }
 
     @Override
-    public void deleteAll() {
+    public void deleteAll() throws Exception{
         userDao.deleteAll();
     }
 
     @Override
-    public void update(User user) {
+    public void update(User user) throws Exception{
         userDao.update(user);
     }
 
     @Override
-    public void upgradeLevels() throws SQLException {
+    public void upgradeLevels() throws Exception {
         List<User> users = userDao.getAll();
         for (User user : users) {
             if (canUpgradeLevel(user)) {
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    protected void upgradeLevel(User user) {
+    protected void upgradeLevel(User user) throws Exception{
         user.upgradeLevel();
         userDao.update(user);
     }

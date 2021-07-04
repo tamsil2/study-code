@@ -7,13 +7,13 @@ import java.util.List;
 public interface UserDao {
     void add(final User user) throws Exception;
 
-    User get(String id);
+    User get(String id) throws Exception;
 
-    void deleteAll();
+    void deleteAll() throws Exception;
 
-    int getCount();
+    int getCount() throws Exception;
 
-    List<User> getAll();
+    List<User> getAll() throws Exception;
 
-    void update(User user);
+    void update(User user) throws Exception;
 }
