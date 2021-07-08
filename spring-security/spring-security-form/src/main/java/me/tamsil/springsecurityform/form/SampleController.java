@@ -2,6 +2,7 @@ package me.tamsil.springsecurityform.form;
 
 import me.tamsil.springsecurityform.account.AccountContext;
 import me.tamsil.springsecurityform.account.AccountRepository;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,5 +48,11 @@ public class SampleController {
     public String admin(Model model, Principal principal) {
         model.addAttribute("message", "Hello Admin, " + principal.getName());
         return "admin";
+    }
+
+    @GetMapping("/user")
+    public String user(Model model, Principal principal) {
+        model.addAttribute("message", "Hello User, " + principal.getName());
+        return "user";
     }
 }

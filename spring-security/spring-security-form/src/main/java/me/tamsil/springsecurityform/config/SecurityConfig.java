@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-@Order(Ordered.LOWEST_PRECEDENCE - 100)
+@Order(Ordered.LOWEST_PRECEDENCE - 50)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -17,6 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .mvcMatchers("/", "/info", "/account/**").permitAll()
                 .mvcMatchers("/admin").hasRole("ADMIN")
+                .mvcMatchers("/user").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()

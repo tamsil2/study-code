@@ -6,8 +6,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@Configuration
-@Order(Ordered.LOWEST_PRECEDENCE - 15)
+//@Configuration
+//@Order(Ordered.LOWEST_PRECEDENCE - 100)
 public class AnotherSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
