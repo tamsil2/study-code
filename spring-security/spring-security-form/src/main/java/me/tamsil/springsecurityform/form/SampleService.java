@@ -2,6 +2,8 @@ package me.tamsil.springsecurityform.form;
 
 import me.tamsil.springsecurityform.account.Account;
 import me.tamsil.springsecurityform.account.AccountContext;
+import me.tamsil.springsecurityform.common.SecurityLogger;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,5 +26,11 @@ public class SampleService {
         System.out.println("==================");
         System.out.println(authentication);
         System.out.println(userDetails.getUsername());
+    }
+
+    @Async
+    public void asyncService() {
+        SecurityLogger.log("Async Service");
+        System.out.println("Async service is called.");
     }
 }
