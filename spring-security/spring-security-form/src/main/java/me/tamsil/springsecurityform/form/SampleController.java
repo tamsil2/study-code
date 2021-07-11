@@ -2,9 +2,12 @@ package me.tamsil.springsecurityform.form;
 
 import me.tamsil.springsecurityform.account.AccountContext;
 import me.tamsil.springsecurityform.account.AccountRepository;
+import me.tamsil.springsecurityform.account.UserAccount;
+import me.tamsil.springsecurityform.book.BookRepository;
 import me.tamsil.springsecurityform.common.SecurityLogger;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,12 +26,15 @@ public class SampleController {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private BookRepository bookRepository;
+
     @GetMapping("/")
-    public String index(Model model, Principal principal) {
-        if (principal == null) {
+    public String index(Model model, @AuthenticationPrincipal UserAccount userAccount) {
+        if (userAccount == null) {
             model.addAttribute("message", "Hello Spring Security");
         } else {
-            model.addAttribute("message", "Hello, " + principal.getName());
+            model.addAttribute("message", "Hello, " + userAccount.getUsername());
         }
         model.addAttribute("message", "Hello Spring Security");
         return "index";
@@ -57,6 +63,7 @@ public class SampleController {
     @GetMapping("/user")
     public String user(Model model, Principal principal) {
         model.addAttribute("message", "Hello User, " + principal.getName());
+        model.addAttribute("books", bookRepository.findCurrentUserBooks());
         return "user";
     }
 
