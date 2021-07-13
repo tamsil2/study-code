@@ -1,17 +1,16 @@
 package me.tamsil.core.order;
 
+import lombok.RequiredArgsConstructor;
 import me.tamsil.core.discount.DiscountPolicy;
 import me.tamsil.core.member.Member;
 import me.tamsil.core.member.MemberRepository;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService{
     private final MemberRepository memberRepository;
-    private DiscountPolicy discountPolicy;
-
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
+    private final DiscountPolicy discountPolicy;
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
@@ -19,5 +18,10 @@ public class OrderServiceImpl implements OrderService{
         int discountPrice = discountPolicy.discount(member, itemPrice);
 
         return new Order(memberId, itemName, itemPrice, discountPrice);
+    }
+
+    // 테스트 용도
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
     }
 }
