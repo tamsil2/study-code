@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>me.kobeshow</groupId>
-    <artifactId>inflearn-studyolle</artifactId>
+    <artifactId>studyolle</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot-studyolle</name>
+    <name>studyolle</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
