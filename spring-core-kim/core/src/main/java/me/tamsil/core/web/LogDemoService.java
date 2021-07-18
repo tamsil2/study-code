@@ -2,6 +2,7 @@ package me.tamsil.core.web;
 
 import lombok.RequiredArgsConstructor;
 import me.tamsil.core.common.MyLogger;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 
 @Service

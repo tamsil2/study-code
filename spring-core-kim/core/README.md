@@ -51,3 +51,19 @@
 - session : HTTP Session과 동일한 생명주기를 가지는 스코프
 - application : 서블릿 컨텍스트와 동일한 생명주기를 가지는 스코프
 - websocket : 웹 소켓과 동일한 생명주기를 가지는 스코프
+
+## 스코프와 프록시
+```java
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class MyLogger {
+}
+```
+- 적용 대상이 인터페이스가 아닌 클래스일 경우 : TARGET_CLASS
+- 적용 대상이 인터페이스면 INTERFACE
+- 이렇게 하면 MyLogger의 가짜 프록시 클래스를 만들어두고 HTTP request와 상관 없이 가짜 프록시 클래스를 다른 빈에 미리 주입해 둘 수 있다
+
+### CGLIB라는 라이브러리로 내 클래스를 상속 받은 가짜 프록시 객체를 만들어서 주입
+- @Scope의 proxyMode = ScopedProxyMode.TARGET_CLASS를 설정하면 스프링 컨테이너는 CGLIB라는 바이트 코드를 조작하는 라이브러리를 사용해서, MyLogger를 상속받은 가짜 프록시 객체를 생성한다
+- 결과를 확인해보면 xxxxCGLIB라는 클래스로 만들어진 객체가 대신 등록
+- 스프링 컨테이너에 'myLogger'라는 이름으로 진짜 대시에 이 가짜 프록시 객체를 등록
+- ac.getBean("myLogger", MyLogger.class)로 조회해도 프록시 객체가 조회
