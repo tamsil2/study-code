@@ -3,11 +3,16 @@ package me.kobeshow.studyolle.domain;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import me.kobeshow.studyolle.account.UserAccount;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@NamedEntityGraph(
+        name = "Event.withEnrollments",
+        attributeNodes = @NamedAttributeNode("enrollments")
+)
 @Entity
 @Getter
 @Setter
@@ -22,7 +27,7 @@ public class Event {
     private Study study;
 
     @ManyToOne
-    private Account createBy;
+    private Account createdBy;
 
     @Column(nullable = false)
     private String title;
@@ -49,4 +54,40 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
+
+    public boolean isEnrollableFor(UserAccount userAccount) {
+        return isNotClosed() && !isAleadyEnrolled(userAccount);
+    }
+
+    public boolean isDisenrollableFor(UserAccount userAccount) {
+        return isNotClosed() && isAleadyEnrolled(userAccount);
+    }
+
+    private boolean isNotClosed() {
+        return this.endEnrollmentDateTime.isAfter(LocalDateTime.now());
+    }
+
+    public boolean isAttended(UserAccount userAccount) {
+        Account account = userAccount.getAccount();
+        for (Enrollment e : this.enrollments) {
+            if (e.getAccount().equals(account) && e.isAttended()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isAleadyEnrolled(UserAccount userAccount) {
+        Account account = userAccount.getAccount();
+        for (Enrollment e : this.enrollments) {
+            if (e.getAccount().equals(account)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int numberOfRemainSpots() {
+        return this.limitOfEnrollments - (int) this.enrollments.stream().filter(Enrollment::isAccepted).count();
+    }
 }
