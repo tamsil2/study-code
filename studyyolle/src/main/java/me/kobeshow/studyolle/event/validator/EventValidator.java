@@ -1,5 +1,6 @@
 package me.kobeshow.studyolle.event.validator;
 
+import me.kobeshow.studyolle.domain.Event;
 import me.kobeshow.studyolle.event.form.EventForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -32,6 +33,12 @@ public class EventValidator implements Validator {
         }
     }
 
+    public void validateUpdateForm(EventForm eventForm, Event event, Errors errors) {
+        if (eventForm.getLimitOfEnrollments() < event.getNumberOfAcceptedEnrollments()) {
+            errors.rejectValue("limitOfEnrollments", "wrong.value", "확인된 참가 신청보다 모집 인원 수가 커야 합니다.");
+        }
+    }
+
     private boolean isNotValidStartDateTime(EventForm eventForm) {
         return eventForm.getStartDateTime().isBefore(eventForm.getEndEnrollmentDateTime());
     }
@@ -44,4 +51,5 @@ public class EventValidator implements Validator {
         LocalDateTime endDateTime = eventForm.getEndDateTime();
         return endDateTime.isBefore(eventForm.getStartDateTime()) || eventForm.getEndDateTime().isBefore(eventForm.getEndEnrollmentDateTime());
     }
+
 }
