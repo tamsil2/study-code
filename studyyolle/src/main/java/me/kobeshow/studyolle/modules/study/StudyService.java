@@ -2,10 +2,12 @@ package me.kobeshow.studyolle.modules.study;
 
 import lombok.RequiredArgsConstructor;
 import me.kobeshow.studyolle.modules.account.Account;
+import me.kobeshow.studyolle.modules.study.event.StudyCreatedEvent;
 import me.kobeshow.studyolle.modules.tag.Tag;
 import me.kobeshow.studyolle.modules.zone.Zone;
 import me.kobeshow.studyolle.modules.study.form.StudyDescriptionForm;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ public class StudyService {
 
     private final StudyRepository repository;
     private final ModelMapper modelMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Study createNewStudy(Study study, Account account) {
         Study newStudy = repository.save(study);
@@ -109,6 +112,7 @@ public class StudyService {
 
     public void publish(Study study) {
         study.publish();
+        this.eventPublisher.publishEvent(new StudyCreatedEvent(study));
     }
 
     public void close(Study study) {
