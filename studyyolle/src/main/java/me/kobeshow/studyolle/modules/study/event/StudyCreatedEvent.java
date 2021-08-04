@@ -1,15 +1,13 @@
 package me.kobeshow.studyolle.modules.study.event;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import me.kobeshow.studyolle.modules.study.Study;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
+@RequiredArgsConstructor
 public class StudyCreatedEvent {
 
-    private Study study;
-
-    public StudyCreatedEvent(Study study) {
-        this.study = study;
-    }
+    private final Study study;
 }

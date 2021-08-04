@@ -18,19 +18,6 @@ import java.util.Set;
         @NamedAttributeNode("zones"),
         @NamedAttributeNode("managers"),
         @NamedAttributeNode("members")})
-@NamedEntityGraph(name = "Study.withTagsAndManagers", attributeNodes = {
-        @NamedAttributeNode("tags"),
-        @NamedAttributeNode("managers")})
-@NamedEntityGraph(name = "Study.withZonesAndManagers", attributeNodes = {
-        @NamedAttributeNode("zones"),
-        @NamedAttributeNode("managers")})
-@NamedEntityGraph(name = "Study.withManagers", attributeNodes = {
-        @NamedAttributeNode("managers")})
-@NamedEntityGraph(name = "Study.withMembers", attributeNodes = {
-        @NamedAttributeNode("members")})
-@NamedEntityGraph(name = "Study.withTagsAndZones", attributeNodes = {
-        @NamedAttributeNode("tags"),
-        @NamedAttributeNode("zones")})
 @Entity
 @Getter
 @Setter
@@ -84,6 +71,8 @@ public class Study {
     private boolean closed;
 
     private boolean useBanner;
+
+    private int memberCount;
 
     public void addManager(Account account) {
         this.managers.add(account);
@@ -160,9 +149,11 @@ public class Study {
 
     public void addMember(Account account) {
         this.getMembers().add(account);
+        this.memberCount++;
     }
 
     public void removeMember(Account account) {
         this.getMembers().remove(account);
+        this.memberCount--;
     }
 }
