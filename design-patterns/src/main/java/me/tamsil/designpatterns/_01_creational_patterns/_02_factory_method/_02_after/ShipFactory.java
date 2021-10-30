@@ -25,7 +25,5 @@ public interface ShipFactory {
         System.out.println(name + " 만들 준비 중");
     }
 
-    private static void sendEmailTo(String email, Ship ship) {
-        System.out.println(ship.getName() + " 다 만들었습니다.");
-    }
+    void sendEmailTo(String email, Ship ship);
 }
