@@ -1,4 +1,4 @@
-package me.kobeshow.advanced.v0;
+package me.kobeshow.advanced.app.v0;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
