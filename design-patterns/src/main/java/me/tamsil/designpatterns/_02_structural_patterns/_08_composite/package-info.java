@@ -1,0 +1,1 @@
+package me.tamsil.designpatterns._02_structural_patterns._08_composite;
