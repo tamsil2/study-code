@@ -1,4 +1,4 @@
-package me.kobeshow.advanced.trace.HelloTraceV1;
+package me.kobeshow.advanced.trace.hellotrace;
 
 import lombok.extern.slf4j.Slf4j;
 import me.kobeshow.advanced.trace.TraceId;
