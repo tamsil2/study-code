@@ -36,3 +36,8 @@
 - TruePointcut : 항상 참을 반환한다.
 - AnnotationMatchingPointcut : 애노테이션으로 매칭한다.
 - AspectJExpressionPointcut : aspectJ 표현식으로 매칭한다.
+
+---
+스프링은 AOP를 적용할 때, 최적화를 진행해서 지금처럼 프록시는 하나만 만들고, 하나의 프록시에 여러 어드바이저를 적용한다.
+정리하면 하나의 target에 여러 AOP가 동시에 적용되어도, 스프링의 AOP는 target마다 하나의 프록시만 생성한다.
+---
