@@ -325,3 +325,69 @@ within 지시자는 특정 타입 내의 조인 포인트에 대한 매칭을 �
 this(hello.aop.member.MemberService);
 target(hello.aop.member.MemberService);
 ```
+
+## 스프링 AOP - 실무 주의사항
+### 프록시 방식의 AOP 한계
+스프링은 프록시 방식의 AOP를 사용한다. 프록시 방식의 AOP는 메서드 내부 호출에 프록시를 적용할 수 없다.
+
+### 프록시와 내부 호출 - 대안1 자기 자신 주입
+```java
+public class CallServiceV1 {
+
+    private CallServiceV1 callServiceV1;
+
+    @Autowired
+    public void setCallServiceV1(CallServiceV1 callServiceV1) {
+        log.info("callServiceV1 setter={}", callServiceV1.getClass());
+        this.callServiceV1 = callServiceV1;
+    }
+}
+```
+* 강의에서는 호출이 되지만 실제 호출해보면 호출이 되지 않는다 : 아마도 스프링부트 버전 업그레이드 하면서 순환참조에 대한 기본 설정이 변경되서 그런게 아닐까 하는 예상
+
+### 프록시와 내부 호출 - 대안2 지연 조회
+#### ApplicationContext에서 직접 빈을 꺼내는 지연 로딩 방식
+```java
+public class CallServiceV2 {
+
+    private final ApplicationContext applicationContext;
+
+    public CallServiceV2(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+}
+```
+
+#### ObjectProvider에서 꺼내는 방식
+```java
+public class CallServiceV2 {
+
+    private final ObjectProvider<CallServiceV2> callServiceProvider;
+
+    public CallServiceV2(ObjectProvider<CallServiceV2> callServiceProvider) {
+        this.callServiceProvider = callServiceProvider;
+    }
+    public void external() {
+        log.info("call external");
+        CallServiceV2 callServiceV2 = callServiceProvider.getObject();
+        callServiceV2.internal(); //외부 메서드 호출
+    }
+}
+```
+
+### 프록시와 내부 호출 - 대안3 구조 변경
+```java
+@Slf4j
+@Component
+public class InternalService {
+    public void internal() {
+        log.info("call internal");
+    }
+}
+```
+### 프록시 기술의 한계 - 타입 캐스팅
+JDK 동적 프록시는 인터페이스가 필수이고, 인터페이스를 기반으로 프록시를 생성한다
+CGLIB는 구체 클래스를 기반으로 프록시를 생성한다
+- proxyTargetClass=false JDK 동적 프록시를 사용해서 인터페이스 기반 프록시 생성
+- proxyTargetClass=true CGLIB를 사용해서 구체 클래스 기반 프록시 생성
+- 참고로 옵션과 무관하게 인터페이스가 없으면 JDK 동적 프록시를 적용할 수 없으므로 CGLIB를 사용한다.
