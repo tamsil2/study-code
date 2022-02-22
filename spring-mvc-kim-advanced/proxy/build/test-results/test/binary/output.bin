@@ -1,0 +1,12 @@
+Ë22:29:25.472 [Test worker] DEBUG org.springframework.context.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@176b3f44
+å22:29:25.486 [Test worker] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.annotation.internalConfigurationAnnotationProcessor'
+Ö22:29:25.583 [Test worker] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.event.internalEventListenerProcessor'
+Ô22:29:25.585 [Test worker] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.event.internalEventListenerFactory'
+á22:29:25.586 [Test worker] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.annotation.internalAutowiredAnnotationProcessor'
+Þ22:29:25.587 [Test worker] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.annotation.internalCommonAnnotationProcessor'
+¨22:29:25.592 [Test worker] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'helloPostProcessor'
+Ã22:29:25.594 [Test worker] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'beanPostProcessorTest.BeanPostProcessorConfig'
+—22:29:25.597 [Test worker] INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'beanPostProcessorTest.BeanPostProcessorConfig' of type [hello.proxy.postprocessor.BeanPostProcessorTest$BeanPostProcessorConfig$$EnhancerBySpringCGLIB$$3e14617f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+›22:29:25.610 [Test worker] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'beanA'
+³22:29:25.611 [Test worker] INFO hello.proxy.postprocessor.BeanPostProcessorTest$AToBPostProcessor - beanName=beanA bean=hello.proxy.postprocessor.BeanPostProcessorTest$A@5a62b2a4
+\22:29:25.629 [Test worker] INFO hello.proxy.postprocessor.BeanPostProcessorTest$B - hello B
