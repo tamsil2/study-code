@@ -1,7 +1,6 @@
 package me.tamsil.core;
 
 import me.tamsil.core.discount.DiscountPolicy;
-import me.tamsil.core.discount.FixDiscountPolicy;
 import me.tamsil.core.discount.RateDiscountPolicy;
 import me.tamsil.core.member.MemberService;
 import me.tamsil.core.member.MemberServiceImpl;

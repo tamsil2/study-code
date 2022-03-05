@@ -10,18 +10,9 @@ import java.util.Set;
 
 public class ParticipantDashboard extends Dashboard {
 
-    public void printParticipants(int eventId) throws IOException {
+    public void printUsernames(int eventId) throws IOException {
         // Get github issue to check homework
-        GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("whiteship/live-study");
-        GHIssue issue = repository.getIssue(eventId);
-
-        // Get participants
-        Set<String> participants = new HashSet<>();
-        issue.getComments().forEach(c -> participants.add(c.getUserName()));
-
-        // Print participants
-        participants.forEach(System.out::println);
+        super.printUsernames(eventId);
     }
 
 }
