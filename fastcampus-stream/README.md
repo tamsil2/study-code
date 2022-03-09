@@ -167,3 +167,54 @@ Stream<Integer> parallelStream2 = numbers.stream().parallel();
   - 항상 속도가 빨라지는 것은 아니다
   - 공통으로 사용하는 리소스가 있을 경우 잘못된 결과가 나오거나 아예 오류가 날 수도 있다(deadlock)
   - 이를 막기 위해 mutex, semaphore등 병렬 처리 기술을 이용하면 순차처리보다 느려질 수도 있다
+
+## Part9. 함수형 프로그래밍의 응용
+### 1. Scope, Closure & Curry
+#### Scope (스코프/유효범위) : 변수에 접근할 수 있는 범위
+  - 함수 안에 함수가 있을 때 내부 함수에서 외부 함수에 있는 변수에 접근이 가능하다(lexical scope). 그 반대는 불가능하다
+#### Closure
+- 내부 함수가 존재하는 한 내부 함수가 사용한 외부 함수의 변수들 역시 계속 존재한다. 이렇게 lexical scope를 포함하는 함수를 closure라 한다.
+- 이 때 내부 함수가 사용한 외부 함수의 변수들은 내부 함수 선언 당시로부터 변할 수 없기 때문에 final로 선언되지 않더라도 암묵적으로 final로 취급된다
+#### Curry
+- 여러 개의 매개변수를 받는 함수를 중첩된 여러 개의 함수로 쪼개어 매개 변수를 한 번에 받지 않고, 여러 단계에 걸쳐 나눠 받을 수 있게 하는 기술
+- Closure의 응용
+
+### Lazy Evaluation
+- Lambda의 계산은 그 결과값이 필요할 때가 되어서야 계산된다
+- 이를 이용하여 불필요한 계산을 줄이거나 해당 코드의 실행 순서를 의도적으로 미룰 수 있다
+
+### Function Composition - 함수 합성
+- 여러 개의 함수를 합쳐 하나의 새로운 함수로 만드는 것
+```java
+<V> Function<T, R> compose(Function<? super V, ? extends T> before)
+<V> Function<T, V> andThen(Function<? super R, ? extends V> after)
+```
+
+## Part10. 함수형 프로그래밍을 이용한 디자인 패턴
+### 1. Design Pattern - 디자인 패턴이란
+- 반복해서 등장하는 프로그래밍 문제들에 대한 해법들을 패턴화 해놓은 것
+- 패턴들을 숙지해놓으면 비슷한 문제가 생겼을 때 패턴들이 이정표가 되어준다
+#### Design Pattern - 디자인 패턴의 종류
+- 생성 패턴(Creational Patterns) : 오브젝트의 생성에 관련된 패턴
+- 구조 패턴(Structural Patterns) : 상속을 이용해 클래스/오브젝트를 조합하여 더 발전된 구조로 만드는 패턴
+- 행동 패턴(Behavioral Patterns) : 필요한 작업을 여러 객체에 분배하여 객체간 결합도를 줄이게 해주는 패턴
+
+### 2. Builder Pattern
+- 대표적인 생성 패턴
+- 객체의 생성에 대한 로직과 표현에 대한 로직을 분리해준다
+- 객체의 생성 과정을 유연하게 해준다
+- 객체의 생성 과정을 정의하고 싶거나 필드가 많아 constructor가 복잡해질 때 유용
+
+### 3. Decorator Pattern
+- 구조 패턴의 하나
+- 용도에 따라 객체에 기능을 계속 추가(decorate)할 수 있게 해준다
+
+### 4. Strategy Pattern
+- 대표적인 행동 패턴
+- 런타임에 어떤 전략(알고리즘)을 사용할 지 선택할 수 있게 해준다
+- 전략들을 캡슐화 하여 간단하게 교체할 수 있게 해준다
+
+### 5. Template Method Pattern
+- 또 하나의 대표적인 행동 패턴
+- 상위 클래스는 알고리즘의 뼈대만을 정의하고 알고리즘의 각 단계는 하위 클래스에게 정의를 위임하는 패턴
+- 알고리즘의 구조를 변경하지 않고 세부 단계들을 유연하게 변경할 수 있게 해준다

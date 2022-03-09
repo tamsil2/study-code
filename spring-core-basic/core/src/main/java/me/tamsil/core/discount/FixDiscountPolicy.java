@@ -2,7 +2,6 @@ package me.tamsil.core.discount;
 
 import me.tamsil.core.member.Grade;
 import me.tamsil.core.member.Member;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component

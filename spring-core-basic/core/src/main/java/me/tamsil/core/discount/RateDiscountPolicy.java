@@ -2,9 +2,6 @@ package me.tamsil.core.discount;
 
 import me.tamsil.core.member.Grade;
 import me.tamsil.core.member.Member;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
