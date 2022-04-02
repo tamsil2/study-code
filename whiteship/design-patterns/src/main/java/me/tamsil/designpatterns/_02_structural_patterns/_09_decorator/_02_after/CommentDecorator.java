@@ -1,6 +1,6 @@
 package me.tamsil.designpatterns._02_structural_patterns._09_decorator._02_after;
 
-public class CommentDecorator implements CommentService{
+public class CommentDecorator implements CommentService {
 
     private CommentService commentService;
 

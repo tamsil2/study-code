@@ -5,8 +5,6 @@ public class EmailMessage {
     private String to;
     private String subject;
     private String text;
-    private String cc;
-    private String bcc;
 
     public String getFrom() {
         return from;
@@ -38,21 +36,5 @@ public class EmailMessage {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public String getCc() {
-        return cc;
-    }
-
-    public void setCc(String cc) {
-        this.cc = cc;
-    }
-
-    public String getBcc() {
-        return bcc;
-    }
-
-    public void setBcc(String bcc) {
-        this.bcc = bcc;
     }
 }

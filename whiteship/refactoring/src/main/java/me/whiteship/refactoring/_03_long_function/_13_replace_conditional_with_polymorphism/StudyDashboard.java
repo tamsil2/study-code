@@ -29,7 +29,12 @@ public class StudyDashboard {
 
     private void print() throws IOException, InterruptedException {
         checkGithubIssues(getGhRepository());
-        new StudyPrinter(this.totalNumberOfEvents, this.participants).execute();
+        new StudyPrinter(this.totalNumberOfEvents, this.participants) {
+            @Override
+            public void execute() throws IOException {
+
+            }
+        }.execute();
     }
 
     private GHRepository getGhRepository() throws IOException {

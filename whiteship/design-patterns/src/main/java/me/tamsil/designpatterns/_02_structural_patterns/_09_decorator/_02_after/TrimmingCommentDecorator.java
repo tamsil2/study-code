@@ -1,6 +1,6 @@
 package me.tamsil.designpatterns._02_structural_patterns._09_decorator._02_after;
 
-public class TrimmingCommentDecorator extends CommentDecorator{
+public class TrimmingCommentDecorator extends CommentDecorator {
 
     public TrimmingCommentDecorator(CommentService commentService) {
         super(commentService);

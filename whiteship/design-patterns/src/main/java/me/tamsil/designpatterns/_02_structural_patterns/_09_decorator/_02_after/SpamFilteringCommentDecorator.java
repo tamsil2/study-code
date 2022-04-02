@@ -1,6 +1,6 @@
 package me.tamsil.designpatterns._02_structural_patterns._09_decorator._02_after;
 
-public class SpamFilteringCommentDecorator extends CommentDecorator{
+public class SpamFilteringCommentDecorator extends CommentDecorator {
 
     public SpamFilteringCommentDecorator(CommentService commentService) {
         super(commentService);
