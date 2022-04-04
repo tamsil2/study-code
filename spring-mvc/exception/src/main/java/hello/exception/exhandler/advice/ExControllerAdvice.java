@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice(basePackages = "hello.exception.api")
+@RestControllerAdvice
 public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResult illegalExceptionHandler(IllegalArgumentException e) {
+    public ErrorResult illegalExHandler(IllegalArgumentException e) {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult("BAD", e.getMessage());
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResult> userExceptionHandler(UserException e) {
+    public ResponseEntity<ErrorResult> userExHandler(UserException e) {
         log.error("[exceptionHandler] ex", e);
         ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
@@ -29,7 +29,7 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
-    public ErrorResult exceptionHandler(Exception e) {
+    public ErrorResult exHandler(Exception e) {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult("EX", "내부 오류");
     }

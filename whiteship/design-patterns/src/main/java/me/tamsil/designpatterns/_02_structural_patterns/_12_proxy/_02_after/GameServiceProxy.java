@@ -1,6 +1,6 @@
 package me.tamsil.designpatterns._02_structural_patterns._12_proxy._02_after;
 
-public class GameServiceProxy implements GameService{
+public class GameServiceProxy implements GameService {
 
     private GameService gameService;
 

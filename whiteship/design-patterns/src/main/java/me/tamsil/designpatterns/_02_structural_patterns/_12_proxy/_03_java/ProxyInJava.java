@@ -19,15 +19,13 @@ public class ProxyInJava {
     }
 
     private GameService getGameServiceProxy(GameService target) {
-        return (GameService) Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                new Class[]{GameService.class}, new InvocationHandler() {
-                    @Override
-                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        System.out.println("0");
-                        method.invoke(target, args);
-                        System.out.println("ㅁ");
-                        return null;
-                    }
-                });
+        return (GameService) Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{GameService.class}, new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                System.out.println("Hello dynamic proxy");
+                method.invoke(target, args);
+                return null;
+            }
+        });
     }
 }

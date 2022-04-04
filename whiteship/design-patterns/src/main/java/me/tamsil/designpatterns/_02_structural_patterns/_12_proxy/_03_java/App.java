@@ -17,6 +17,8 @@ public class App {
 
     @Bean
     public ApplicationRunner applicationRunner(GameService gameService) {
-        return args -> gameService.startGame();
+        return args -> {
+            gameService.startGame();
+        };
     }
 }

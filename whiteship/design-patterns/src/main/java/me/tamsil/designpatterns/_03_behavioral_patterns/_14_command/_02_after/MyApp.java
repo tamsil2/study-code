@@ -15,5 +15,6 @@ public class MyApp {
 
     public static void main(String[] args) {
         MyApp myApp = new MyApp(new GameStartCommand(new Game()));
+        myApp.press();
     }
 }

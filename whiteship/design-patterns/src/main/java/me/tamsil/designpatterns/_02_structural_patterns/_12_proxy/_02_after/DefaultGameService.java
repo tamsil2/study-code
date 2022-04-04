@@ -1,6 +1,6 @@
 package me.tamsil.designpatterns._02_structural_patterns._12_proxy._02_after;
 
-public class DefaultGameService implements GameService{
+public class DefaultGameService implements GameService {
 
     @Override
     public void startGame() {

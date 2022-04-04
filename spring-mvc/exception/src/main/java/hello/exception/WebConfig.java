@@ -2,10 +2,9 @@ package hello.exception;
 
 import hello.exception.filter.LogFilter;
 import hello.exception.interceptor.LogInterceptor;
-import hello.exception.resolver.MyhandlerExceptionResolver;
+import hello.exception.resolver.myHandlerExceptionResolver;
 import hello.exception.resolver.UserHandlerExceptionResolver;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -22,13 +21,13 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LogInterceptor())
                 .order(1)
-                .addPathPatterns("/**")
+                .addPathPatterns("**")
                 .excludePathPatterns("/css/**", "*.ico", "/error", "/error-page/**");
     }
 
     @Override
     public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
-        resolvers.add(new MyhandlerExceptionResolver());
+        resolvers.add(new myHandlerExceptionResolver());
         resolvers.add(new UserHandlerExceptionResolver());
     }
 

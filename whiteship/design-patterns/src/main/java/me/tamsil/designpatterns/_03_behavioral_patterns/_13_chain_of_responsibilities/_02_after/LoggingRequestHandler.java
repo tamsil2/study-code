@@ -2,7 +2,7 @@ package me.tamsil.designpatterns._03_behavioral_patterns._13_chain_of_responsibi
 
 import me.tamsil.designpatterns._03_behavioral_patterns._13_chain_of_responsibilities._01_before.Request;
 
-public class LoggingRequestHandler extends RequestHandler{
+public class LoggingRequestHandler extends RequestHandler {
 
     public LoggingRequestHandler(RequestHandler nextHandler) {
         super(nextHandler);

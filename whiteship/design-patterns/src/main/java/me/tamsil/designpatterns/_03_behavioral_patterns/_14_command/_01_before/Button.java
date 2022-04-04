@@ -8,7 +8,7 @@ public class Button {
     }
 
     public void press() {
-        light.off();
+        light.on();
     }
 
     public static void main(String[] args) {

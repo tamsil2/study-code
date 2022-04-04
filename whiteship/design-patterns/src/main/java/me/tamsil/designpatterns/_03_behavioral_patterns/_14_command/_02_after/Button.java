@@ -6,7 +6,6 @@ import me.tamsil.designpatterns._03_behavioral_patterns._14_command._01_before.L
 import java.util.Stack;
 
 public class Button {
-
     private Stack<Command> commands = new Stack<>();
 
     public void press(Command command) {
