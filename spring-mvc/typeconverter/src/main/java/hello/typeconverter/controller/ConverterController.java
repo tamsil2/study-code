@@ -21,24 +21,25 @@ public class ConverterController {
     @GetMapping("/converter/edit")
     public String converterForm(Model model) {
         IpPort ipPort = new IpPort("127.0.0.1", 8080);
-        form form = new form(ipPort);
+        Form form = new Form(ipPort);
         model.addAttribute("form", form);
         return "converter-form";
     }
 
     @PostMapping("/converter/edit")
-    public String converterEdit(@ModelAttribute form form, Model model) {
+    public String converterEdit(@ModelAttribute Form form, Model model) {
         IpPort ipPort = form.getIpPort();
         model.addAttribute("ipPort", ipPort);
         return "converter-view";
     }
 
     @Data
-    static class form {
+    static class Form {
         private IpPort ipPort;
 
-        public form(IpPort ipPort) {
+        public Form(IpPort ipPort) {
             this.ipPort = ipPort;
         }
     }
+
 }

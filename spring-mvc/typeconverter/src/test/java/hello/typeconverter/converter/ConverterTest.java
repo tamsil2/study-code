@@ -15,14 +15,14 @@ public class ConverterTest {
     }
 
     @Test
-    void integerToString() {
+    void IntegerToString() {
         IntegerToStringConverter converter = new IntegerToStringConverter();
         String result = converter.convert(10);
         assertThat(result).isEqualTo("10");
     }
 
     @Test
-    void stringToPort() {
+    void stringToIpPort() {
         IpPortToStringConverter converter = new IpPortToStringConverter();
         IpPort source = new IpPort("127.0.0.1", 8080);
         String result = converter.convert(source);
