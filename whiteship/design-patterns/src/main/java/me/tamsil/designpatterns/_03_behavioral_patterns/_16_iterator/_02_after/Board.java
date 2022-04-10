@@ -1,7 +1,5 @@
 package me.tamsil.designpatterns._03_behavioral_patterns._16_iterator._02_after;
 
-import me.tamsil.designpatterns._03_behavioral_patterns._16_iterator._01_before.Post;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,11 +11,15 @@ public class Board {
         return posts;
     }
 
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
     public void addPost(String content) {
         this.posts.add(new Post(content));
     }
 
     public Iterator<Post> getRecentPostIterator() {
-        return new RecentPostIterator(this.posts);
+        return new RecentPostIterator(this.getPosts());
     }
 }

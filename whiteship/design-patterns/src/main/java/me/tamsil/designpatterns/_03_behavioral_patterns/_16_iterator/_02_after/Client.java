@@ -1,7 +1,5 @@
 package me.tamsil.designpatterns._03_behavioral_patterns._16_iterator._02_after;
 
-import me.tamsil.designpatterns._03_behavioral_patterns._16_iterator._01_before.Post;
-
 import java.util.Iterator;
 import java.util.List;
 
