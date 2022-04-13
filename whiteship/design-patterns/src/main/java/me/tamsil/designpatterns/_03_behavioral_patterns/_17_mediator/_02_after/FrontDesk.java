@@ -3,7 +3,6 @@ package me.tamsil.designpatterns._03_behavioral_patterns._17_mediator._02_after;
 import java.time.LocalDateTime;
 
 public class FrontDesk {
-
     private CleaningService cleaningService = new CleaningService();
 
     private Restaurant restaurant = new Restaurant();

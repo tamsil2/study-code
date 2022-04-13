@@ -6,6 +6,6 @@ public class CleaningService {
 
     public void getTowers(Integer guestId, int numberOfTowers) {
         String roomNumber = this.frontDesk.getRoomNumberFor(guestId);
-        System.out.println("provide " + numberOfTowers + " to" + roomNumber);
+        System.out.println("provide " +  numberOfTowers + " to" + roomNumber);
     }
 }
