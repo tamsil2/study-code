@@ -93,3 +93,55 @@ public class TransactionTemplate {
 ```
 - execute() : 응답 값이 있을때 사용한다
 - executeWithoutResult() : 응답 값이 없을때 사용한다
+
+### 스프링이 제공하는 트랜잭션 AOP
+- 스프링은 트랜잭션 AOP를 처리하기 위한 모든 기능을 제공한다. 스프링부트를 사용하면 트랜잭션 AOP를 처리하기 위해 필요한 스프링 빈들도 자동으로 등록해준다
+- @Transactional
+```java
+org.springframework.transaction.annotation.Transactional
+```
+- 스프링 AOP를 적용하려면 어드바이저, 포인트컷, 어드바이스가 필요하다. 스프링은 트랜잭션 AOP 처리를 위해 다음 클래스를 제공한다. 스프링부트를 사용하면 해당 빈들은 스프링 컨테이너에 자동으로 등록된다.
+  - 어드바이저 : BeanFactoryTransactionAttributeSourceAdvisor
+  - 포인트컷 : TransactionAttributeSourcePointcut
+  - 어드바이스 : TransactionInterceptor
+
+- @SpringBootTest : 스프링 AOP를 적용하려면 스프링 컨테이너가필요하다. 이 애노테이션이 있으면 테스트시 스프링 부트를 통해서 스프링 컨테이너를 생성한다.
+- @TestConfiguration : 테스트 안에서 내부 설정 클래스를 만들어서 사용하면서 이 애노테이션을 붙히면, 스프링부트가 자동으로 만들어주는 빈들에 추가로 필요한 스프링 빈들을 등록하고 테스트를 수행할 수 있다.
+- TestConfig
+  - DataSource : 스프링에서 기본으로 사용할 데이터소르를 스프링 빈으로 등록한다. 추가로 트랜잭션 매니저에서도 사용한다.
+  - DataSourceTransactionManager : 트랜잭션 매니저를 스프링 빈으로 등록한다.
+    - 스프링이 제공하는 트랜잭션 AOP는 스프링 빈에 등록된 트랜잭션 매니저를 찾아서 사용하기 때문에 트랜잭션 매니저를 스프링 빈으로 등록해두어야 한다.
+
+### 선언적 트랜잭션 관리과 프로그래밍 방식 트랜잭션 관리의 차이점
+- 선언적 트랜잭션 관리(Declarative Transaction Management)
+  - @Transactional 애노테이션 하나만 선언해서 매우 편리하게 트랜잭션을 적용하는 것을 선언적 트랜잭션 관리라 한다.
+  - 선언적 트랜잭션 관리는 과저 XML에 설정하기도 했다. 이름 그대로 해당 로직에 트랜잭션을 적용하겠다 라고 어딘가에 선언하기만 하면 트랜잭션이 적용되는 방식이다.
+- 프로그래밍 방식의 트랜잭션 관리(Programmatic transaction management)
+  - 트랜잭션 매니저 또는 트랜잭션 템플릿 등을 사용해서 트랜잭션 관련 코드를 직접 작성하는 것
+- 선언적 트랜잭션 관리가 프로그래밍 방식에 비해서 훨씬 간편하고 실용적이기 때문에 실무에서는 대부분 선언적 트랜잭션 관리를 사용한다.
+- 프로그래밍 방식의 트랜잭션 관리는 스프링 컨테이너나 스프링 AOP 기술 없이 간단히 사용할 수 있지만 실무에서는 대부분 스프링 컨테이너와 스프링 AOP를 사용하기 때문에 거의 사용되지 않는다.
+- 프로그래밍 방식 트랜잭션 관리는 테스트시 가끔 사용할 때는 있다.
+
+### 스프링부트의 자동 리소스 등록
+#### 데이터소스 자동 등록
+- 스프링 부트는 데이터소스(DataSource)를 스프링빈에 자동으로 등록한다
+- 자동으로 등록되는 스프링 빈 이름 : dataSource
+- 참고로 개발자가 직접 데이터소스를 빈으로 등록하면 스프링 부트는 데이터소스를 자동으로 동록하지 않는다
+- 스프링 부트는 application.properties에 있는 속성을 사용해서 DataSource를 생성한다. 그리고 스프링 빈에 등록한다
+- application.properties
+```properties
+spring.datasource.url=jdbc:h2:tcp://localhost/~/test
+spring.datasource.username=sa
+spring.datasource.password=
+```
+- 스프링부트가 기본으로 생성하는 데이터소스는 커넥션을 제공하는 HikariDataSource이다. 커넥션풀과 관련된 설정도 application.properties를 통해서 지정할 수 있다.
+- spring.datasource.url 속성이 없으면 내장 데이터베이스(메모리 DB)를 생성하려고 시도한다.
+
+#### 트랜잭션 매니저 자동등록
+- 스프링부트는 적절한 트랜잭션 매니저(PlatformTransactionManager)를 자동으로 스프링 빈에 등록한다
+- 자동으로 등록되는 스프링 빈 이름 : transactionManager
+- 개발자가 직접 트랜잭션 매니저를 빈으로 등록하면 스프링부트는 트랜잭션 매니저를 자동으로 등록하지 않음
+- 어떤 트랜잭션 매니저를 선택할지는 현재 등록된 라이브러리를 보고 판단
+  - DataSourceTransactionManager : JDBC 기술 사용
+  - JpaTransactionManager : JPA 사용
+  - 둘다 사용하는 경우 JpaTransactionManager 등록
