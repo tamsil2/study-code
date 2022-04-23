@@ -234,3 +234,62 @@ public class Sample {
 }
 ```
 예외를 포함하지 않아서 기존에 발생한 java.sql.SQLException과 스택 트레이스를 확인할 수 없다. 변환한 RuntimeSQLException부터 예외를 확인할 수 있다. 만약 실제 DB에 연동했다면 DB에서 발생한 예외를 확인할 수 없는 심각한 문제가 발생한다.
+
+## 스프링과 문제 해결 - 예외 처리, 반복
+### 체크 예외와 인터페이스
+- 인터페이스의 구현체가 체크 예외를 던지려면, 인터페이스 메서드에 먼저 체크 예외를 던지는 부분이 선언되어 있어야 한다. 그래야 구현클래스의 메서드도 체크 예외를 던질 수 있다.
+- 참고로 구현 클래스의 메서드에 선언할 수 있는 예외는 부모 타입에서 던진 예외와 같거나 하위 타입이어야 한다.
+
+```java
+public interface MemberRepositoryEx {
+    Member save(Member member) throws SQLException;
+    Member findById(String memberId) throws SQLException;
+    void update(String memberId, int money) throws SQLException;
+    void delete(String memberId) throws SQLException;
+}
+```
+- 인터페이스의 구현체가 체크 예외를 던지려면, 인터페이스 메서드에 먼저 체크 예외를 던지는 부분이 선언되어 있어야 한다. 그래야 구현 클래스의 메서드도 체크 예외를 던질 수 있다.
+- 구현 클래스의 메서드에 선언할 수 있는 예외는 부모 타입에서 던진 예외와 같거나 하위 타입이어야 한다.
+
+### 특정 기술에 종속되는 인터페이스
+구현 기술을 쉽게 변경하기 위해서 인터페이스를 도입하더라도 SQLException과 같은 특정 구현 기술에 종속적인 체크 예외를 사용하게 되면 인터페이스에도 해당 예외를 포함해야 한다. 이것은 우리가 원하던 순수한 인터페이스가 아니다
+
+### 런타임 예외와 인터페이스
+```java
+catch (SQLException e) {
+    throw new MyDbException(e);
+}
+```
+- 예외는 원인이 되는 예외를 내부에 포함할 수 있는데, 꼭 이렇게 작성해야 한다. 그래야 예외를 출력했을 때 원인이 되는 기존 예외도 함께 확인할 수 있다.
+- MyDbException이 내부에 SQLException을 포함하고 있다고 이해하면 된다. 예외를 출력했을 때 스택 트레이스를 통해 둘다 확인할 수 있다.
+
+**예외를 변환할 때는 기존 예외를 꼭 포함하자. 장애가 발생하고 로그에서 진짜 원인이 남지 않는 심각한 문제가 발생할 수 있다.**
+
+### 데이터 접근 예외 직접 만들기
+### 스프링 예외 추상화 이해
+- 스프링은 데이터 접근 계층에 대한 수십 가지 예외를 정리해서 일관된 예외 계층을 제공한다
+- 각각의 예외는 특정 기술에 종속적이지 않게 설게되어 있다. 따라서 서비스 계층에서도 스프링이 제공하는 예외를 사용하면 된다.
+- JDBC나 JPA를 사용할 때 발생하는 예외를 스프링이 제공하는 예외로 변환해주는 역할도 스프링이 제공한다
+![ExceptionTree](./picture/SpringDataException.png)
+- 예외의 최고 상위는 DataAccessException이다. 런타임 예외를 상속 받았기 때문에 스프링이 제공하는 데이터 접근 계층의 모든 예외는 런타임 예외이다.
+- DataAccessException은 크게 2가지로 구분하는데 NonTransient예외와 Transient 예외이다.
+  - Transient는 일시적이라는 뜻이다. Transient 하위 예외는 동일한 SQL을 다시 시도했을 때 성공할 가능성이 있다
+    - 예를 들어서 쿼리 타임아웃, 락과 관련된 오류들이다. 이런 오류들은 데이터베이스 상태가 좋아지거나, 락이 풀렸을 때 다시 시도하면 성공할 수도 있다.
+  - NonTransient는 일시적이지 않다는 뜻이다. 같은 SQL을 그대로 반복해서 실행하면 실패한다.
+    - SQL 문법 오류, 데이터베이스 제약조건 위배 등이 있다
+    - 
+### 스프링 SQL 예외 변환기
+- 스프링이 제공하는 SQL 예외변환기는 아래와 같이 사용
+```java
+SQLErrorCodeSQLExceptionTranslator exTranslator = new SQLErrorCodeSQLExceptionTranslator(dataSource);
+DataAccessException resultEx = exTranslator.translate("select", sql, e);
+```
+  - translate() 메서드의 첫번째 파라미터는 읽을 수 있는 설명이고, 두번째는 실행한 sql, 마지막은 발생된 SQLException을 전달하면 된다. 이렇게 하면 적절한 스프링 데이터 접근 계층의 예외로 변환해서 반환해준다
+
+### 스프링의 에러코드 리스트 변환기
+- 스프링 SQL 예외 변환기는 SQL ErrorCode를 이 파일에 대입해서 어떤 스프링 데이터 접근 예외로 전환되야 할 지 찾아낸다.
+
+## JDBC 반복 문제 해결 - JDBCTemplate
+- 스프링은 JDBC의 반복 문제를 해결하기 위해 JdbcTemplate 템플릿을 제공
+- JdbcTemplate은 JDBC로 개발할때 발생하는 반복을 대부분 해결해준다
+- 트랜잭션을 위한 커넥션 동기화, 예외 발생시 스프링 예외 변환기도 자동으로 실행해준다
