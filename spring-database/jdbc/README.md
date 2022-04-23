@@ -283,7 +283,7 @@ catch (SQLException e) {
 ```java
 SQLErrorCodeSQLExceptionTranslator exTranslator = new SQLErrorCodeSQLExceptionTranslator(dataSource);
 DataAccessException resultEx = exTranslator.translate("select", sql, e);
-```
+```복
   - translate() 메서드의 첫번째 파라미터는 읽을 수 있는 설명이고, 두번째는 실행한 sql, 마지막은 발생된 SQLException을 전달하면 된다. 이렇게 하면 적절한 스프링 데이터 접근 계층의 예외로 변환해서 반환해준다
 
 ### 스프링의 에러코드 리스트 변환기
