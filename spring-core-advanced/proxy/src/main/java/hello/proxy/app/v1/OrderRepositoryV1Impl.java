@@ -1,7 +1,6 @@
 package hello.proxy.app.v1;
 
 public class OrderRepositoryV1Impl implements OrderRepositoryV1 {
-
     @Override
     public void save(String itemId) {
         //저장 로직
@@ -15,7 +14,7 @@ public class OrderRepositoryV1Impl implements OrderRepositoryV1 {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

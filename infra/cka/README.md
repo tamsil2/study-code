@@ -114,3 +114,11 @@ spec:
 ```
 
 - kubectl apply -f 파일명.yaml
+
+## Tolation
+
+root@controlplane:~# kubectl run bee --image=nginx --restart=Never --dry-run=client -o yaml > bee.yaml
+root@controlplane:~# kubectl explain pod --recursive | less
+kubectl explain pod --recursive | grep -A5 tolerations
+
+### TLS Certificates

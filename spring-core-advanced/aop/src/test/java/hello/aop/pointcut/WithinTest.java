@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import static org.assertj.core.api.Assertions.*;
 
 public class WithinTest {
+
     AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
     Method helloMethod;
 
@@ -27,7 +28,7 @@ public class WithinTest {
     }
 
     @Test
-    void withinStar() {
+    void withinStart() {
         pointcut.setExpression("within(hello.aop.member.*Service*)");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
@@ -46,7 +47,7 @@ public class WithinTest {
     }
 
     @Test
-    @DisplayName("execution은 타입 기반, 인터페이스를 선정 가능.")
+    @DisplayName("execution은 타입 기반, 인터페이스 선정 가능")
     void executionSuperTypeTrue() {
         pointcut.setExpression("execution(* hello.aop.member.MemberService.*(..))");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();

@@ -1,6 +1,7 @@
 package hello.proxy.config.v1_proxy.concrete_proxy;
 
 import hello.proxy.app.v2.OrderControllerV2;
+import hello.proxy.app.v2.OrderServiceV2;
 import hello.proxy.trace.TraceStatus;
 import hello.proxy.trace.logtrace.LogTrace;
 
@@ -20,7 +21,6 @@ public class OrderControllerConcreteProxy extends OrderControllerV2 {
         TraceStatus status = null;
         try {
             status = logTrace.begin("OrderController.request()");
-            //target 호출
             String result = target.request(itemId);
             logTrace.end(status);
             return result;

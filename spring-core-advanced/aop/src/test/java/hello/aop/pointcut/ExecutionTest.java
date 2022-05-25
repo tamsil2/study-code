@@ -2,7 +2,6 @@ package hello.aop.pointcut;
 
 import hello.aop.member.MemberServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
@@ -13,7 +12,6 @@ import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 public class ExecutionTest {
-
     AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
     Method helloMethod;
 
@@ -29,7 +27,7 @@ public class ExecutionTest {
 
     @Test
     void exactMatch() {
-        //public java.lang.String hello.aop.member.MemberServiceImpl.hello(java.lang.String)
+        //public java.lang.String hello.aop.order.aop.member.MemberServiceImpl.hello(java.lang.String)
         pointcut.setExpression("execution(public String hello.aop.member.MemberServiceImpl.hello(String))");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
@@ -122,6 +120,7 @@ public class ExecutionTest {
         assertThat(pointcut.matches(internalMethod, MemberServiceImpl.class)).isFalse();
     }
 
+    //String 타입의 파라미터 허용
     //(String)
     @Test
     void argsMatch() {
@@ -154,7 +153,7 @@ public class ExecutionTest {
     }
 
     //String 타입으로 시작, 숫자와 무관하게 모든 파라미터, 모든 타입 허용
-    //(String), (String, Xx), (String, Xxx, Xxx)
+    //(String), (String, Xxx), (String, Xxx, Xxx)
     @Test
     void argsMatchComplex() {
         pointcut.setExpression("execution(* *(String, ..))");

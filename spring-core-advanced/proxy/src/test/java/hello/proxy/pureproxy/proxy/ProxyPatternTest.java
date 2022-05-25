@@ -6,6 +6,7 @@ import hello.proxy.pureproxy.proxy.code.RealSubject;
 import org.junit.jupiter.api.Test;
 
 public class ProxyPatternTest {
+
     @Test
     void noProxyTest() {
         RealSubject realSubject = new RealSubject();

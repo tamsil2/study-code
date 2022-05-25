@@ -15,6 +15,7 @@ import org.springframework.aop.support.NameMatchMethodPointcut;
 
 import java.lang.reflect.Method;
 
+@Slf4j
 public class AdvisorTest {
 
     @Test
@@ -34,7 +35,7 @@ public class AdvisorTest {
     void advisorTest2() {
         ServiceInterface target = new ServiceImpl();
         ProxyFactory proxyFactory = new ProxyFactory(target);
-        DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(new MyPointcut(), new TimeAdvice());
+        DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(new MyPointCut(), new TimeAdvice());
         proxyFactory.addAdvisor(advisor);
         ServiceInterface proxy = (ServiceInterface) proxyFactory.getProxy();
 
@@ -48,7 +49,7 @@ public class AdvisorTest {
         ServiceInterface target = new ServiceImpl();
         ProxyFactory proxyFactory = new ProxyFactory(target);
         NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
-        pointcut.setMappedNames("save");
+        pointcut.setMappedName("save");
         DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, new TimeAdvice());
         proxyFactory.addAdvisor(advisor);
         ServiceInterface proxy = (ServiceInterface) proxyFactory.getProxy();
@@ -57,7 +58,7 @@ public class AdvisorTest {
         proxy.find();
     }
 
-    static class MyPointcut implements Pointcut {
+    static class MyPointCut implements Pointcut {
 
         @Override
         public ClassFilter getClassFilter() {
@@ -70,15 +71,14 @@ public class AdvisorTest {
         }
     }
 
-    @Slf4j
     static class MyMethodMatcher implements MethodMatcher {
 
-        private String methodName = "save";
+        private String matchName = "save";
 
         @Override
         public boolean matches(Method method, Class<?> targetClass) {
-            boolean result = method.getName().equals(methodName);
-            log.info("포인트컷 호출 method={}, targetClass={}", method.getName(), targetClass);
+            boolean result = method.getName().equals(matchName);
+            log.info("포인트컷 호출 method={} targetClass={}", method.getName(), targetClass);
             log.info("포인트컷 결과 result={}", result);
             return result;
         }

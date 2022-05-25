@@ -4,6 +4,7 @@ import org.aspectj.lang.annotation.Pointcut;
 
 public class PointCuts {
 
+    //hello.aop.order 패키지와 하위 패키지
     @Pointcut("execution(* hello.aop.order..*(..))")
     public void allOrder() {
     } //pointcut signature
@@ -13,6 +14,7 @@ public class PointCuts {
     public void allService() {
     }
 
+    //allOrder && allService
     @Pointcut("allOrder() && allService()")
     public void orderAndService() {}
 }

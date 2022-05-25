@@ -4,7 +4,6 @@ import hello.advanced.trace.TraceStatus;
 import hello.advanced.trace.logtrace.LogTrace;
 
 public class TraceTemplate {
-
     private final LogTrace trace;
 
     public TraceTemplate(LogTrace trace) {
@@ -15,6 +14,7 @@ public class TraceTemplate {
         TraceStatus status = null;
         try {
             status = trace.begin(message);
+
             //로직 호출
             T result = callback.call();
 

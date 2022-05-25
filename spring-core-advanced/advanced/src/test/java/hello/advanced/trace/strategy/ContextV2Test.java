@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 public class ContextV2Test {
 
     /**
-     * 전략 패턴 적용
+     * 전략 패턴 사용
      */
     @Test
     void strategyV1() {

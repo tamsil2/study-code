@@ -21,7 +21,6 @@ public class OrderServiceConcreteProxy extends OrderServiceV2 {
         TraceStatus status = null;
         try {
             status = logTrace.begin("OrderService.orderItem()");
-            //target 호출
             target.orderItem(itemId);
             logTrace.end(status);
         } catch (Exception e) {

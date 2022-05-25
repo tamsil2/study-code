@@ -10,14 +10,14 @@ import org.aspectj.lang.annotation.Aspect;
 public class AspectV4Pointcut {
 
     @Around("hello.aop.order.aop.PointCuts.allOrder()")
-    public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.info("[log] {}", joinPoint.getSignature());
+    public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable{
+        log.info("[log] {}", joinPoint.getSignature()); //join point 시그니처
         return joinPoint.proceed();
     }
 
     //hello.aop.order 패키지와 하위 패키지 이면서 클래스 이름 패턴이 *Service
     @Around("hello.aop.order.aop.PointCuts.orderAndService()")
-    public Object doTransaction(ProceedingJoinPoint joinPoint) throws Throwable{
+    public Object doTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             log.info("[트랜잭션 시작] {}", joinPoint.getSignature());
             Object result = joinPoint.proceed();

@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 public class DecoratorPatternTest {
 
     @Test
-    void noDecorator() {
-        RealComponent realComponent = new RealComponent();
+    void neDecorator() {
+        Component realComponent = new RealComponent();
         DecoratorPatternClient client = new DecoratorPatternClient(realComponent);
         client.execute();
     }

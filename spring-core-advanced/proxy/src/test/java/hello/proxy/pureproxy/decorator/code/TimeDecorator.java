@@ -13,7 +13,7 @@ public class TimeDecorator implements Component {
 
     @Override
     public String operation() {
-        log.info("TimeDecorator 실행");
+        log.info("timeDecorator 실행");
         long startTime = System.currentTimeMillis();
 
         String result = component.operation();

@@ -12,10 +12,10 @@ public class AspectV6Advice {
     @Around("hello.aop.order.aop.PointCuts.orderAndService()")
     public Object doTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
-            //@Befor
+            //@Before
             log.info("[트랜잭션 시작] {}", joinPoint.getSignature());
             Object result = joinPoint.proceed();
-            //@AfterReturing
+            //@AfterReturning
             log.info("[트랜잭션 커밋] {}", joinPoint.getSignature());
             return result;
         } catch (Exception e) {
@@ -29,7 +29,7 @@ public class AspectV6Advice {
     }
 
     @Before("hello.aop.order.aop.PointCuts.orderAndService()")
-    public void deBefore(JoinPoint joinPoint) {
+    public void doBefore(JoinPoint joinPoint) {
         log.info("[before] {}", joinPoint.getSignature());
     }
 
@@ -40,7 +40,7 @@ public class AspectV6Advice {
 
     @AfterThrowing(value = "hello.aop.order.aop.PointCuts.orderAndService()", throwing = "ex")
     public void doThrowing(JoinPoint joinPoint, Exception ex) {
-        log.info("[ex] {} message={}", ex, ex.getMessage());
+        log.info("[ex] {} message={}", ex);
     }
 
     @After(value = "hello.aop.order.aop.PointCuts.orderAndService()")

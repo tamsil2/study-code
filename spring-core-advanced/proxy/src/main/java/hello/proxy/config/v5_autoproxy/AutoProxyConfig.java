@@ -30,7 +30,7 @@ public class AutoProxyConfig {
     public Advisor advisor2(LogTrace logTrace) {
         //pointcut
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression("execution(* hello.proxy.aop..*(..))");
+        pointcut.setExpression("execution(* hello.proxy.app..*(..))");
         //advice
         LogTraceAdvice advice = new LogTraceAdvice(logTrace);
         return new DefaultPointcutAdvisor(pointcut, advice);
@@ -40,7 +40,7 @@ public class AutoProxyConfig {
     public Advisor advisor3(LogTrace logTrace) {
         //pointcut
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression("execution(* hello.proxy.aop..*(..)) && !execution(* hello.proxy.aop..noLog(..))");
+        pointcut.setExpression("execution(* hello.proxy.app..*(..)) && !execution(* hello.proxy.app..noLog(..))");
         //advice
         LogTraceAdvice advice = new LogTraceAdvice(logTrace);
         return new DefaultPointcutAdvisor(pointcut, advice);

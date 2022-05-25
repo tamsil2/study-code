@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class OrderService {
-
     private final OrderRepository orderRepository;
 
     public OrderService(OrderRepository orderRepository) {

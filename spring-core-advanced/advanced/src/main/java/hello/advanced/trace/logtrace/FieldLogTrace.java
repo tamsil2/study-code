@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class FieldLogTrace implements LogTrace {
+
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
@@ -16,7 +17,7 @@ public class FieldLogTrace implements LogTrace {
     public TraceStatus begin(String message) {
         syncTraceId();
         TraceId traceId = traceIdHolder;
-        Long startTimeMs = System.currentTimeMillis();
+        long startTimeMs = System.currentTimeMillis();
         log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
         return new TraceStatus(traceId, startTimeMs, message);
     }
@@ -44,11 +45,9 @@ public class FieldLogTrace implements LogTrace {
         long resultTimeMs = stopTimeMs - status.getStartTimeMs();
         TraceId traceId = status.getTraceId();
         if (e == null) {
-            log.info("[{}] {}{} time={}ms", traceId.getId(),
-                    addSpace(COMPLETE_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs);
+            log.info("[{}] {}{} time={}ms", traceId.getId(), addSpace(COMPLETE_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs);
         } else {
-            log.info("[{}] {}{} time={}ms ex={}", traceId.getId(),
-                    addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs, e.toString());
+            log.info("[{}] {}{} time={}ms ex={}", traceId.getId(), addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs, e.toString());
         }
 
         releaseTraceId();

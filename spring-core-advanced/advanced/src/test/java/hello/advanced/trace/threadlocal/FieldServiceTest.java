@@ -1,8 +1,9 @@
-package hello.advanced.trace.threadlocal;
+package hello.advanced.trace.threadLocal;
 
-import hello.advanced.trace.threadlocal.code.FieldService;
+import hello.advanced.trace.threadLocal.code.FieldService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.helpers.TransformedHeader;
 
 @Slf4j
 public class FieldServiceTest {
@@ -14,6 +15,7 @@ public class FieldServiceTest {
         Runnable userA = () -> {
             fieldService.logic("userA");
         };
+
         Runnable userB = () -> {
             fieldService.logic("userB");
         };
@@ -24,7 +26,6 @@ public class FieldServiceTest {
         threadB.setName("thread-B");
 
         threadA.start();
-//        sleep(2000);
         sleep(100);
         threadB.start();
 
@@ -34,7 +35,7 @@ public class FieldServiceTest {
 
     private void sleep(int millis) {
         try {
-            Thread.sleep(millis);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

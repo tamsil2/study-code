@@ -15,11 +15,11 @@ public class BasicTest {
     void basicConfig() {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BasicConfig.class);
 
-        //A는 빈으로 등로된다.
+        //A는 빈으로 등록된다
         A a = applicationContext.getBean("beanA", A.class);
         a.helloA();
 
-        //B는 빈으로 등록되지 않는다.
+        //B는 빈으로 등록되지 않는다
         Assertions.assertThrows(NoSuchBeanDefinitionException.class, () -> applicationContext.getBean(B.class));
     }
 
@@ -45,5 +45,4 @@ public class BasicTest {
             log.info("hello B");
         }
     }
-
 }

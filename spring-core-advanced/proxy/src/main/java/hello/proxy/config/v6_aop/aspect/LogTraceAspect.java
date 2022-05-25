@@ -7,11 +7,10 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
-import java.lang.reflect.Method;
-
 @Slf4j
 @Aspect
 public class LogTraceAspect {
+
     private final LogTrace logTrace;
 
     public LogTraceAspect(LogTrace logTrace) {
@@ -19,7 +18,7 @@ public class LogTraceAspect {
     }
 
     @Around("execution(* hello.proxy.app..*(..))")
-    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable{
         TraceStatus status = null;
         try {
             String message = joinPoint.getSignature().toShortString();

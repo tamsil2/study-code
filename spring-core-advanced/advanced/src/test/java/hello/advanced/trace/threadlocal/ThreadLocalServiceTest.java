@@ -1,7 +1,7 @@
-package hello.advanced.trace.threadlocal;
+package hello.advanced.trace.threadLocal;
 
-import hello.advanced.trace.threadlocal.code.FieldService;
-import hello.advanced.trace.threadlocal.code.ThreadLocalService;
+import hello.advanced.trace.threadLocal.code.FieldService;
+import hello.advanced.trace.threadLocal.code.ThreadLocalService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +15,7 @@ public class ThreadLocalServiceTest {
         Runnable userA = () -> {
             fieldService.logic("userA");
         };
+
         Runnable userB = () -> {
             fieldService.logic("userB");
         };
@@ -25,7 +26,6 @@ public class ThreadLocalServiceTest {
         threadB.setName("thread-B");
 
         threadA.start();
-//        sleep(2000);
         sleep(100);
         threadB.start();
 
@@ -35,7 +35,7 @@ public class ThreadLocalServiceTest {
 
     private void sleep(int millis) {
         try {
-            Thread.sleep(millis);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
