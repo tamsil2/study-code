@@ -7,7 +7,7 @@ public class Audience {
         this.bag = bag;
     }
 
-    public Long buy(Ticket ticket) {
-        return bag.hold(ticket);
+    public Bag getBag() {
+        return bag;
     }
 }

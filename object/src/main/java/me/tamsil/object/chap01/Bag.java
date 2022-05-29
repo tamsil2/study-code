@@ -9,23 +9,12 @@ public class Bag {
         this(null, amount);
     }
 
-    public Bag(Invitation invitation, long amount) {
+    public Bag(Invitation invitation, Long amount) {
         this.invitation = invitation;
         this.amount = amount;
     }
 
-    public Long hold(Ticket ticket) {
-        if (hasInvitation()) {
-            setTicket(ticket);
-            return 0L;
-        } else {
-            setTicket(ticket);
-            minusAmount(ticket.getFee());
-            return ticket.getFee();
-        }
-    }
-
-    private boolean hasInvitation() {
+    public boolean hasInvitation() {
         return invitation != null;
     }
 
@@ -33,11 +22,11 @@ public class Bag {
         return ticket != null;
     }
 
-    private void setTicket(Ticket ticket) {
+    public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
 
-    private void minusAmount(Long amount) {
+    public void minusAmount(Long amount) {
         this.amount -= amount;
     }
 
