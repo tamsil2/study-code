@@ -238,3 +238,257 @@ DB를 애플리케이션에 내장해서 함께 실행한다고 해서 임베디
 ### 스프링 부트 - 기본 SQL 스크립트를 사용해서 데이터베이스를 초기화하는 기능
 메모리 DB는 애플리케이션이 종료될 때 함께 사라지기 때문에, 애플리케이션 실행 시점에 데이터베이스 테이블도 새로 만들어주어야 한다.
 JDBC나 JdbcTemplate를 직접 사용해서 테이블을 생성하는 DDL을 호출해도 되지만 너무 불편하다. 스프링 부트는 SQL 스크립트를 실행해서 애플리케이션 로딩 시점에 데이터베이스를 초기화하는 기능을 제공한다.
+
+## 데이터 접근 기술 - MyBatis
+MyBatis는 JdbcTemplate보다 더 많은 기능을 제공하는 SQL Mapper이다.
+
+### MyBatis 라이브러리 의존성 추가
+```properties
+ //MyBatis 추가
+implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+```
+- mybatis-spring-boot-starter : MyBatis를 스프링부트에서 편리하게 사용할 수 있게 시작하는 라이브러리
+- mybatis-spring-boot-autoconfigure : MyBatis와 스프링 부트 설정 라이브러리
+- mybatis-spring : MyBatis와 스프링을 연동하는 라이브러리
+- mybatis : MyBatis 라이브러리
+
+
+### 스프링부트 MyBatis 프로퍼티 설정
+```properties
+#MyBatis
+mybatis.type-aliases-package=hello.itemservice.domain
+mybatis.configuration.map-underscore-to-camel-case=true
+logging.level.hello.itemservice.repository.mybatis=trace
+```
+- mybatis.type-aliases-package
+  - 마이바티스에서 타입 정보를 사용할 때는 패키지 이름을 적어주어야 하는데, 여기에 명시하면 패키지 이름을 생략할 수 있다
+  - 지정한 패키지와 그 하위 패키지가 자동으로 인식된다
+  - 여러 위치를 지정하려면 ,, ;로 구분하면 된다
+- mybatis.configuration.map-underscore-to-camel-case
+  - JdbcTemplate의 BeanPropertyRowMapper에서 처럼 언더바를 카멜로 자동 변경해주는 기능을 활성화 한다
+- logging.level.hello.itemservice.repository.mybatis
+  - MyBatis에서 실행되는 쿼리 로그를 확인할 수 있다
+
+```java
+@Mapper
+public interface ItemMapper {
+    void save(Item item);
+    void update(@Param("id") Long id, @Param("updateParam") ItemUpdateDto updateParam);
+    List<Item> findAll(ItemSearchCond itemSearch);
+    Optional<Item> findById(Long id);
+}
+```
+- 마이바티스 매핑 XML을 호출해주는 매퍼 인터페이스이다
+- 이 인터페이스에는 @Mapper 애노테이션을 붙여주어야 한다. 그래야 MyBatis에서 인식할 수 있다
+- 이 인터페이스의 메서드를 호출하면 다음에 보이는 xml의 해당 SQL을 실행하고 결과를 돌려준다
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hello.itemservice.repository.mybatis.ItemMapper">
+    <insert id="">
+    </insert>
+    <update id="">
+    </update>
+    <select id="">
+    </select>
+</mapper>
+```
+- namespace : 앞서 만든 매퍼 인터페이스를 지정하면 된다
+- id에는 매퍼 인터페이스에 설정한 메서드 이름을 지정하면 된다.
+- 파라미터는 #{} 문법을 사용하면 된다. 그리고 매퍼에서 넘긴 객체의 프로퍼티 이름을 적어주면 된다
+- resultType은 반환타입을 명시하면 된다.
+- XML 특수문자
+  - XML에서는 데이터 영역에 <, > 같은 특수문자를 사용할 수 없기 때문에 아래와 같이 치환문자를 사용하거나 CDATA 구문을 사용해야 한다
+```properties
+< : &lt;
+> : &gt;
+& : &amp;
+```
+```xml
+<if test="maxPrice != null">
+    <![CDATA[
+        and price <= #{maxPrice}
+    ]]>
+</if>
+```
+
+> XMl 파일 경로 수정하기
+> mybatis.mapper-locations=classpath:mapper/**/*.xml
+
+### MyBatis 분석
+![mybatis_image](./image/mybatis_image.png)
+1. 애플리케이션 로딩 시점에 MyBatis 스프링 연동 모듈을 @Mapper가 붙어있는 인터페이스를 조사한다
+2. 해당 인터페이스가 발견되면 동적 프록시 기술을 사용해서 ItemMapper 인터페이스의 구현체를 만든다
+3. 생성된 구현체를 스프링 빈으로 등록한다
+
+### MyBatis 기능 - 동적 SQL
+- if
+```xml
+<select id="findActiveBlogWithTitleLike"
+       resultType="Blog">
+    SELECT * FROM BLOG
+    WHERE state = ‘ACTIVE’
+    <if test="title != null">
+      AND title like #{title}
+    </if>
+</select>
+```
+- 해당 조건에 따라 값을 추가할지 말지 판단한다
+- 내부의 문법은 OGNL을 사용한다
+
+- choose(when, otherwise)
+```xml
+<select id="findActiveBlogLike" resultType="Blog">
+    SELECT * FROM BLOG WHERE state = ‘ACTIVE’
+    <choose>
+      <when test="title != null">
+        AND title like #{title}
+      </when>
+      <when test="author != null and author.name != null">
+        AND author_name like #{author.name}
+      </when>
+      <otherwise>
+        AND featured = 1
+      </otherwise>
+    </choose>
+</select>
+```
+- trim, where, set
+```xml
+<select id="findActiveBlogLike"
+       resultType="Blog">
+    SELECT * FROM BLOG
+    WHERE
+    <if test="state != null">
+      state = #{state}
+    </if>
+    <if test="title != null">
+      AND title like #{title}
+    </if>
+    <if test="author != null and author.name != null">
+      AND author_name like #{author.name}
+    </if>
+</select>
+```
+- 위와 같이 사용하게 되면 모든 조건을 만족하지 않을때 WHERE 또는 AND 구문이 만족할 경우 WHERE AND 이렇게 문법 오류 SQL이 만들어지게 된다
+
+- where 사용
+```xml
+<select id="findActiveBlogLike" resultType="Blog">
+    SELECT * FROM BLOG
+    <where>
+      <if test="state != null">
+           state = #{state}
+      </if>
+      <if test="title != null">
+          AND title like #{title}
+      </if>
+      <if test="author != null and author.name != null">
+          AND author_name like #{author.name}
+      </if>
+    </where>
+</select>
+```
+- <where>는 문장이 없으면 where을 추가하지 않는다. 문장이 있으면 where을 추가한다. 만약 and가 먼저 시작된다면 and를 지운다
+- 참고로 trim을 사용해도 되는데, 아래와 같이 정의하면 <where>과 같은 기능을 수행한다
+```xml
+<trim prefix="WHERE" prefixOverrides="AND |OR ">
+    ...
+</trim>
+```
+
+- foreach
+```xml
+<select id="selectPostIn" resultType="domain.blog.Post">
+    SELECT *
+    FROM POST P
+    <where>
+      <foreach item="item" index="index" collection="list"
+          open="ID in (" separator="," close=")" nullable="true">
+            #{item}
+      </foreach>
+       </where>
+</select>
+```
+- 컬렉션을 반복 처리할 때 사용한다. where in (1,2,3,4,5,6)와 같은 문장을 쉽게 완성할 수 있다
+- 파라미터로 List를 전달하면 된다
+
+### MyBatis 기능 - 기타 기능
+#### 애노테이션으로 SQL 작성
+```java
+@Select("select id, item_name, price, quantity from item where id=#{id}")
+Optional<Item> findById(Long id);
+```
+- @Insert, @Update, @Delete, @Select 기능이 제공된다
+- 이 경우 XML에 해당 태그는 제거해야 한다
+- 동적 SQL이 해결되지 않으므로 간단한 경우에만 사용한다
+
+#### 재사용 가능한 SQL 조각
+```xml
+<sql id="userColumns"> ${alias}.id,${alias}.username,${alias}.password </sql>
+
+<select id="selectUsers" resultType="map">
+    select
+    <include refid="userColumns"><property name="alias" value="t1"/></include>,
+    <include refid="userColumns"><property name="alias" value="t2"/></include>
+    from some_table t1
+    cross join some_table t2
+</select>
+```
+- <include>를 통해서 <sql>조각을 찾아서 사용할 수 있다
+
+```xml
+ <sql id="sometable">
+    ${prefix}Table
+</sql>
+  <sql id="someinclude">
+    from
+      <include refid="${include_target}"/>
+  </sql>
+  <select id="select" resultType="map">
+    select
+      field1, field2, field3
+    <include refid="someinclude">
+      <property name="prefix" value="Some"/>
+      <property name="include_target" value="sometable"/>
+    </include>
+  </select>
+```
+- 프로퍼티 값을 전달할 수 있고, 해당 값은 내부에서 사용할 수 있다
+
+### ResultMap
+- 결과를 매핑할때 사용할 수 있다
+```xml
+<resultMap id="userResultMap" type="User">
+    <id property="id" column="user_id" />
+    <result property="username" column="username"/>
+    <result property="password" column="password"/>
+  </resultMap>
+  <select id="selectUsers" resultMap="userResultMap">
+    select user_id, user_name, hashed_password
+    from some_table
+    where id = #{id}
+</select>
+```
+
+## 데이터 접근 기술 - JPA
+### JPA 설정
+- 의존관계 추가(gradle 기준)
+```xml
+//JPA, 스프링 데이터 JPA 추가
+implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+```
+- hibernate-core : JPA 구현체인 하이버네이트 라이브러리
+- jakarta.persistence-api : JPA 인터페이스
+- spring-data-jpa : 스프링 데이터 JPA 라이브러리
+
+- 로그 설정 추가
+```properties
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+```
+- org.hibernate.SQL=DEBUG : 하이버네이트가 생성하고 실행하는 SQL을 확인할 수 있다
+- org.hibernate.type.descriptor.sql.BasicBinder=TRACE : SQL에 바인딩되는 파라미터를 확인할 수 있다
+- spring.jpa.show-sql=true : 참고로 이런 설정도 있다. 이전 설정은 logger를 통해서 SQL이 출력된다. 이 설정은 System.out 콘솔을 통해서 SQL이 출력된다. 따라서 이 설정은 권장하지는 않는다(둘다 켜면 logger, System.out 둘다 로그가 출력되어서 같은 로그가 중복해서 출력된다)
