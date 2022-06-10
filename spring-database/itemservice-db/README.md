@@ -492,3 +492,127 @@ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
 - org.hibernate.SQL=DEBUG : 하이버네이트가 생성하고 실행하는 SQL을 확인할 수 있다
 - org.hibernate.type.descriptor.sql.BasicBinder=TRACE : SQL에 바인딩되는 파라미터를 확인할 수 있다
 - spring.jpa.show-sql=true : 참고로 이런 설정도 있다. 이전 설정은 logger를 통해서 SQL이 출력된다. 이 설정은 System.out 콘솔을 통해서 SQL이 출력된다. 따라서 이 설정은 권장하지는 않는다(둘다 켜면 logger, System.out 둘다 로그가 출력되어서 같은 로그가 중복해서 출력된다)
+
+### JPA 적용 - 개발
+- @Entity : JPA가 사용하는 객체라는 뜻이다. 이 애노테이션이 있어야 JPA가 인식할 수 있다. 이렇게 @Entity가 붙은 객체를 JPA에서는 엔티티라 한다
+- @Id : 테이블의 PK와 해당 필드를 매핑한다
+- @GeneratedValue(strategy = GenerationType.IDENTITY) : PK 생성 값을 데이터베이스에서 생성하는 IDENTITY 방식을 사용한다
+- @Column : 객체의 필드를 테이블의 컬럼과 매핑한다
+  - name : "item_name" : 객체는 itemName이지만 테이블의 컬럼은 item_name이므로 이렇게 매핑했다
+  - length : 10 : JPA의 매핑 정보로 DDL(create table)도 생성할 수 있는데, 그때 컬럼의 길이 값으로 활용된다. (varchar 10)
+  - @Column을 생략할 경우 필드의 이름을 테이블 컬럼 이름으로 사용한다. 참고로 지금처럼 스프링부트와 통합해서 사용하면 필드 이름을 테이블 컬럼 명으로 변경할 때 객체 필드의 카멜 케이스를 테이블 컬럼의 언더스코어로 자동으로 변환해준다
+- JPA는 public 또는 protected의 기본 생성자가 필수이다. 기본 생성자를 꼭 넣어주자
+
+#### JPA가 만들어서 실행하는 UPDATE SQL
+- JPA는 트랜잭션이 커밋되는 시점에 변경된 엔티티 객체가 있는지 확인한다. 특정 엔티티 객체가 변경된 이후에는 UPDATE SQL을 실행한다
+- 테스트의 경우 마지막에 트랜잭션이 롤백되기 때문에 JPA는 UPDATE SQL을 실행하지 않는다. 테스트에서 UPDATE SQL을 확인하려면 @Commit을 붙이면 확인할 수 있다
+
+#### JPQL 
+- JPA는 JPQL(Java Persistence Query Language)이라는 객체지향 쿼리 언어를 제공한다
+- 주로 여러 데이터를 복잡한 조건으로 조회할 때 사용한다
+- SQL이 테이블을 대상으로 한다면 JPQL은 엔티티 객체를 대상으로 SQL을 실행한다 생각하면 된다
+- 엔티티 객체를 대상으로 하기 때문에 from 다음에 Item 엔티티 객체 이름이 들어간다. 엔티티 객체와 속성의 대소문자는 구분해야 한다
+- JPQL에서 파라미터를 입력하는 방법
+```java
+where price <= :maxPrice
+```
+- 파라미터 바인딩하는 방법
+```java
+query.setParameter("maxPrice", maxPrice)
+```
+
+### JPA 적용 - 예외 변환
+- JPA는 PersistenceException과 그 하위 예외를 발생시키는데 @Repository 애노테이션을 통하여 스프링 Runtime Exception으로 변환된다
+
+#### @Repository의 기능
+- @Repository가 붙은 클래스는 컴포넌트 스캔의 대상이 된다
+- @Repository가 붙은 클래스는 예외 변환 AOP의 적용 대상이 된다
+  - 스프링과 JPA를 함께 사용하는 경우 스프링은 JPA 예외 변환기(PersistenceExceptionTranslator)를 등록한다
+  - 예외 변환 AOP 프록시는 JPA 관련 예외가 발생하면 JPA 예외 변환기를 통해 발생한 예외를 스프링 데이터 접근 예외로 변환한다
+![JPA Exception Convert](./image/jpa_exception.png)
+- 결과적으로 레파지토리에 @Repository 애노테이션만 있으면 스프링이 예외 변환을 처리하는 AOP를 만들어준다
+
+> 참고
+> 스프링 부트는 PersistenceExceptionTranslationPostProcessor를 자동으로 등록하는데, 여기에서 @Repository를 AOP 프록시로 만드는 어드바이저가 등록된다
+> 복잡한 과정을 거쳐서 실제 예외를 변환하는데 실제 JPA 예외를 변환하는 코드는 EntityManagerfactoryUtils.convertJpaAccessExceptionIfPossible() 이다.
+
+## 데이터 접근 기술 - Spring Data JPA
+### 스프링 데이터 JPA 주요 기능
+#### 공통 인터페이스 기능
+```java
+public interface ItemRepository extends JpaRepository<Member, Long> {
+}
+```
+- JpaRepository : 인터페이스를 인터페이스 상속 받고, 제네릭에 관리할 <엔티티, 엔티티ID>를 주면 된다
+- 그러면 JpaRepository가 제공하는 기본 CRUD 기능을 모두 사용할 수 있다
+- 스프링 데이터 JPA가 구현 클래스를 대신 생성
+  - JpaRepository 인터페이스만 상속받으면 스프링 데이터 JPA가 프록시 기술을 사용하여 구현 클래스를 만들어준다. 그리고 만든 구현 클래스의 인스턴스를 만들어서 스프링 빈으로 등록한다.
+#### 쿼리 메소드 기능
+- 스프링 데이터 JPA는 인터페이스에 메서드만 적어두면, 메서드 이름을 분석해서 쿼리를 자동으로 만들고 실행해주는 기능을 제공한다
+- 스프링 데이터 JPA는 메서드 이름을 분석해서 필요한 JPQL을 만들고 실행해준다. 물론 JPQL은 JPA가 SQL로 번역해서 실행한다
+- 스프링 데이터 JPA가 제공하는 쿼리 메소드 기능
+- 조회: find...By , read...By , query...By , get...By
+  예:) findHelloBy 처럼 ...에 식별하기 위한 내용(설명)이 들어가도 된다.
+- COUNT: count...By 반환타입 long
+- EXISTS: exists...By 반환타입 boolean
+- 삭제: delete...By , remove...By 반환타입 long
+- DISTINCT: findDistinct , findMemberDistinctBy
+- LIMIT: findFirst3 , findFirst , findTop , findTop3
+
+### 스프링 데이터 JPA 적용
+#### 예외 변환
+- 스프링 데이터 JPA도 스프링 예외 추상화를 지원한다. 스프링 데이터 JPA가 만들어주는 프록시에서 이미 예외 변환을 처리하기 때문에, @Repository와 관계없이 예외가 변환된다.
+
+#### 주의 - 하이버네이트 버그
+- 하이버네이트 5.6.6 ~ 5.6.7을 사용하면 Like 문장을 사용할 때 다음 예외가 발생한다
+- Parameter value [\] did not match expected type [java.lang.String (n/a)]
+- 스프링 부트 2.6.5 버전은 문제가 되는 하이버네이트 5.6.7을 사용한다
+- build.gradle에 다음을 추가해서 하이버네이트 버전을 문제가 없는 5.6.5.Final로 맞추자
+- ext['hibername.version'] = "5.6.5.Final"
+
+## 데이터 접근 기술 - Querydsl
+### Querydsl 설정
+```properties
+//Querydsl 추가
+implementation 'com.querydsl:querydsl-jpa'
+annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
+annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+//Querydsl 추가, 자동 생성된 Q클래스 gradle clean으로 제거\
+clean {
+    delete file('src/main/generated')
+}
+```
+#### 옵션 선택1 - Gradle Q타입 생성 확인 방법
+- Gradle IntelliJ 사용법
+  - Gradle -> Tasks -> build -> clean
+  - Gradle -> Tasks -> other -> compileJava
+- Gradle 콘솔 사용법
+  - ./gradlew clean compileJava
+
+- Q 타입 생성 확인
+  - build -> generated -> sources -> annotationProcessor -> java/main 하위에 hello.itemservice.domain.QItem 이 생성되어 있어야 한다.
+
+#### 옵션 선택2 - IntelliJ IDEA - Q타입 생성 확인 방법
+- Build -> Build Project 또는 Build -> ReBuild 또는 main(), 또는 테스트를 실행하면 된다
+
+### Querydsl 적용
+- Querydsl을 사용하려면 JPAQueryFactory가 필요하다. JPAQueryFactory는 JPA 쿼리인 JPQL을 만들기 때문에 EntityManager가 필요하다
+- 설정 방식은 JdbcTemplate을 설정하는 것과 유사하다
+- 참고로 JPAQueryFactory를 스프링 빈으로 등록해서 사용해도 된다
+
+# 데이터 접근 기술 - 활용 방안
+## 실용적인 구조
+스프링 데이터 JPA의 기능은 최대한 살리면서, Querydsl도 편리하게 사용할 수 있는 구조로 변]
+[JpaAndQuerydsl](./image/JpaAndQuerydsl.png)
+- ItemRepositoryV2 : 스프링 데이터 JPA의 기능을 제공하는 레파지토리
+- ItemQueryRepositoryV2 : Querydsl을 사용해서 복잡한 쿼리 기능을 제공하는 레파지토리
+이렇게 둘을 분리하면 기본 CRUD와 단순 조회는 스프링 데이터 JPA가 담당하고, 복잡한 조회 쿼리는 Querydsl이 담당하게 된다
+```java
+public class ItemServiceV2 implements ItemService {
+
+  private final ItemRepositoryV2 itemRepositoryV2;
+  private final ItemQueryRepositoryV2 itemQueryRepositoryV2;
+}
+```

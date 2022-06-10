@@ -1,13 +1,13 @@
-package me.tamsil.chapter01.item10.inheritance;
+package me.tamsil.chapter02.item10.inheritance;
 
-import me.tamsil.chapter01.item10.Point;
+import me.tamsil.chapter02.item10.Point;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class CountPoint extends Point {
+public class CounterPoint extends Point {
     private static final AtomicInteger counter = new AtomicInteger();
 
-    public CountPoint(int x, int y) {
+    public CounterPoint(int x, int y) {
         super(x, y);
         counter.incrementAndGet();
     }

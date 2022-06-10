@@ -1,7 +1,7 @@
-package me.tamsil.chapter01.item10.composition;
+package me.tamsil.chapter02.item10.composition;
 
-import me.tamsil.chapter01.item10.Color;
-import me.tamsil.chapter01.item10.Point;
+import me.tamsil.chapter02.item10.Color;
+import me.tamsil.chapter02.item10.Point;
 
 import java.util.Objects;
 

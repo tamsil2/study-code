@@ -1,4 +1,4 @@
-package me.tamsil.chapter01.item10;
+package me.tamsil.chapter02.item10;
 
 import java.net.MalformedURLException;
 import java.net.URL;

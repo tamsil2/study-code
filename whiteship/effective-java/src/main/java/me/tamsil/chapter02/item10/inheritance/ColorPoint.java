@@ -1,7 +1,7 @@
-package me.tamsil.chapter01.item10.inheritance;
+package me.tamsil.chapter02.item10.inheritance;
 
-import me.tamsil.chapter01.item10.Color;
-import me.tamsil.chapter01.item10.Point;
+import me.tamsil.chapter02.item10.Color;
+import me.tamsil.chapter02.item10.Point;
 
 // Point에 값 컴포넌트(color)를 추가 (56쪽)
 public class ColorPoint extends Point {

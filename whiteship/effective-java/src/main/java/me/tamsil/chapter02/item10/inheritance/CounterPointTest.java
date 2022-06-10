@@ -1,7 +1,8 @@
-package me.tamsil.chapter01.item10.inheritance;
+package me.tamsil.chapter02.item10.inheritance;
 
-import me.tamsil.chapter01.item10.Color;
-import me.tamsil.chapter01.item10.Point;
+import me.tamsil.chapter02.item10.Color;
+import me.tamsil.chapter02.item10.Point;
+import me.tamsil.chapter02.item10.composition.ColorPoint;
 
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class CounterPointTest {
 
     public static void main(String[] args) {
         Point p1 = new Point(1, 0);
-        Point p2 = new me.tamsil.chapter01.item10.composition.ColorPoint(1, 0, Color.RED).asPoint();
+        Point p2 = new ColorPoint(1, 0, Color.RED).asPoint();
 
         // true을 출력한다
         System.out.println(onUnitCircle(p1));
