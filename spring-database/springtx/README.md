@@ -113,3 +113,22 @@ readOnly 옵션을 크게 3곳에서 적용된다
   - 읽기, 쓰기(마스터, 슬레이브) 데이터베이스를 구분해서 요청한다. 읽기 전용 트랜잭션의 경우 읽기(슬레이브) 데이터베이스의 커넥션을 획득해서 사용한다
 - 데이터베이스
   - 데이터베이스에 따라 읽기 전용 트랜잭션의 경우 읽기만 하면 되므로, 내부에서 성능 최적화가 발생한다
+
+## 예외와 트랜잭션 커밋, 롤백 
+예외 발생시 스프링 트랜잭션 AOP는 예외의 종류에 따라 트랜잭션을 커밋하거나 롤백한다
+- 언체크 예외인 RuntimeException, Error와 그 하위 예외가 발생하면 트랜잭션을 롤백한다
+- 체크 예외인 Exception과 그 하위 예외가 발생하면 트랜잭션을 커밋한다
+- 물론 정상 응답(리턴)하면 트랜잭션을 커밋한다
+
+### 트랜잭션이 커밋되었는지 롤백되었는지 로그를 통해 확인
+```properties
+logging.level.org.springframework.transaction.interceptor=TRACE
+logging.level.org.springframework.jdbc.datasource.DataSourceTransactionManager=DEBUG
+#JPA log
+logging.level.org.springframework.orm.jpa.JpaTransactionManager=DEBUG
+logging.level.org.hibernate.resource.transaction=DEBUG
+```
+### 테이블 자동 생성
+- application.properties : spring.jpa.hivernate.ddl-auto 으로 조정
+  - none : 테이블을 생성하지 않는다
+  - create : 애플리케이션 시작 시점에 테이블을 생성한다
