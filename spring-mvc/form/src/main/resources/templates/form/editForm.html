@@ -21,7 +21,7 @@
     <form action="item.html" th:action th:object="${item}" method="post">
         <div>
             <label for="id">상품 ID</label>
-            <input type="text" id="id" class="form-control" th:field="*{id}" readonly>
+            <input type="text" id="id" class="form-control" value="1"th:field="*{id}" readonly>
         </div>
         <div>
             <label for="itemName">상품명</label>
@@ -38,6 +38,7 @@
 
         <hr class="my-4">
 
+        <!-- single checkbox -->
         <div>판매 여부</div>
         <div>
             <div class="form-check">
@@ -46,20 +47,19 @@
             </div>
         </div>
 
-        <!-- multi checkbox -->
         <div>
             <div>등록 지역</div>
             <div th:each="region : ${regions}" class="form-check form-check-inline">
-                <input type="checkbox" th:field="${item.regions}" th:value="${region.key}" class="form-check-input" disabled>
+                <input type="checkbox" th:field="*{regions}" th:value="${region.key}" class="form-check-input">
                 <label th:for="${#ids.prev('regions')}" th:text="${region.value}" class="form-check-label">서울</label>
             </div>
         </div>
 
-        <!-- radio button -->
+        <!-- redio button -->
         <div>
             <div>상품 종류</div>
-            <div th:each="type : ${T(hello.itemservice.domain.item.ItemType).values()}" class="form-check form-check-inline">
-                <input type="radio" th:field="${item.itemType}" th:value="${type.name()}" class="form-check-input" disabled>
+            <div th:each="type : ${itemTypes}" class="form-check-inline">
+                <input type="radio" th:field="*{itemType}" th:value="${type.name()}" class="form-check-input">
                 <label th:for="${#ids.prev('itemType')}" th:text="${type.description}" class="form-check-label">
                     BOOK
                 </label>

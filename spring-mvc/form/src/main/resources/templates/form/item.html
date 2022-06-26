@@ -40,6 +40,7 @@
 
     <hr class="my-4">
 
+    <!-- single checkbox -->
     <div>판매 여부</div>
     <div>
         <div class="form-check">
@@ -48,7 +49,6 @@
         </div>
     </div>
 
-    <!-- multi checkbox -->
     <div>
         <div>등록 지역</div>
         <div th:each="region : ${regions}" class="form-check form-check-inline">
@@ -57,10 +57,10 @@
         </div>
     </div>
 
-    <!-- radio button -->
+    <!-- redio button -->
     <div>
         <div>상품 종류</div>
-        <div th:each="type : ${itemTypes}" class="form-check form-check-inline">
+        <div th:each="type : ${itemTypes}" class="form-check-inline">
             <input type="radio" th:field="${item.itemType}" th:value="${type.name()}" class="form-check-input" disabled>
             <label th:for="${#ids.prev('itemType')}" th:text="${type.description}" class="form-check-label">
                 BOOK

@@ -209,3 +209,13 @@ logging.level.org.hibernate.SQL=DEBUG
 - 항상 새로운 트랜잭션을 생성한다
 - 기존 트랜잭션 없음 : 새로운 트랜잭션을 생성한다
 - 기존 트랜잭션 있음 : 새로운 트랜잭션을 생성한다
+
+# 스프링 트랜잭션 전파2 - 활용
+## @Transactional과 REQUIRED
+- 트랜잭션 전파의 기본 값은 REQUIRED이다. 따라서 다음 둘은 같다
+  - @Transactional(propagation = Propagation.REQUIRED)
+  - @Transactional
+- REQUIRED는 기존 트랜잭션이 없으면 새로운 트랜잭션을 만들고, 기존 트랜잭션이 있으면 참여한다
+
+## 트랜잭션 전파 커밋
+스프링은 @Transactinal이 적용되어 있으면 기본으로 REQUIRED라는 전파 옵션을 사용한다.
