@@ -17,7 +17,7 @@ public class Chapter8Section1 {
     public static void main(String[] args) {
         Optional<Integer> max = Stream.of(5, 3, 6, 2, 1)
                 .max(Integer::compareTo);
-//        System.out.println(max.get());
+        System.out.println(max.get());
 
         User user1 = new User()
                 .setId(101)
@@ -44,7 +44,7 @@ public class Chapter8Section1 {
         long positiveIntegerCount = Stream.of(1, -4, 5, -3, 6)
                 .filter(x -> x > 0)
                 .count();
-//        System.out.println("Positive Integers: " + positiveIntegerCount);
+        System.out.println("Positive integers: " + positiveIntegerCount);
 
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         user1.setCreatedAt(now.minusDays(2));
@@ -58,11 +58,12 @@ public class Chapter8Section1 {
                 .setCreatedAt(now.minusHours(27));
         users = Arrays.asList(user1, user2, user3, user4);
 
+        // TODO: 최근 24시간안에 가입을 했고 이메일이 검증되지 않은 유저
         long unverifiedUsersIn24Hrs = users.stream()
                 .filter(user -> user.getCreatedAt().isAfter(now.minusDays(1)))
                 .filter(user -> !user.isVerified())
                 .count();
-//        System.out.println(unverifiedUsersIn24Hrs);
+        System.out.println(unverifiedUsersIn24Hrs);
 
         Order order1 = new Order()
                 .setId(1001L)
@@ -87,8 +88,9 @@ public class Chapter8Section1 {
                 .filter(order -> order.getStatus() == OrderStatus.ERROR)
                 .max((o1, o2) -> o1.getAmount().compareTo(o2.getAmount()))
                 .get();
-//        System.out.println(erroredOrderWithMaxAmount);
+        System.out.println(erroredOrderWithMaxAmount);
 
+        // TODO : find only amount with highest amount an in ERROR status
         BigDecimal maxErroredAmount = orders.stream()
                 .filter(order -> order.getStatus() == OrderStatus.ERROR)
                 .map(Order::getAmount)
