@@ -10,6 +10,8 @@ import java.util.stream.IntStream;
 public class Chapter8Section9 {
     public static void main(String[] args) {
         List<Integer> numbers = Arrays.asList(3, 5, 2, 1);
+
+        // TODO List에 있는 숫자를 하나씩 출력
 //        numbers.stream().forEach(number -> System.out.println("The number is " + number));
         numbers.forEach(number -> System.out.println("The number is " + number));
 
@@ -30,17 +32,18 @@ public class Chapter8Section9 {
                 .setEmailAddress("charlie@fastcampus.co.kr");
         List<User> users = Arrays.asList(user1, user2, user3);
 
+        // TODO 검증이 되지 않은 User에게 Email 전송
         EmailService emailService = new EmailService();
+        users.stream()
+                .filter(user -> !user.isVerified())
+                .forEach(user -> emailService.sendVerifyYourEmail(user));
+
+        // TODO 검증이 되지 않은 User에게 Email 전송(Method Reference 사용)
         users.stream()
                 .filter(user -> !user.isVerified())
                 .forEach(emailService::sendVerifyYourEmail);
 
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            System.out.println("Do an operation on user " + user.getName() + " at index " + i);
-        }
-
-        // 위의 index가 있는 for문을 IntStream을 통해서 해결할 수 있다
+        // TODO For문 안에서 index를 쓰는 경우 -> IntStream을 활용
         IntStream.range(0, users.size()).forEach(i -> {
             User user = users.get(i);
             System.out.println("Do an operation on user " + user.getName() + " at index " + i);

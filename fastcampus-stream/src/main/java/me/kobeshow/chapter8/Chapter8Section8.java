@@ -33,6 +33,7 @@ public class Chapter8Section8 {
                 .setFriendUserIds(Arrays.asList(204, 205, 207, 218));
         List<User> users = Arrays.asList(user1, user2, user3);
 
+        // TODO User의 친구수가 5명 이상이면 친구와 놀아보세요 Email을 보내고 5명 이하이면 친구를 더 만들어보세요 Email을 보낸다
         Map<Boolean, List<User>> userPartitions = users.stream()
                 .collect(Collectors.partitioningBy(user -> user.getFriendUserIds().size() > 5));
 
