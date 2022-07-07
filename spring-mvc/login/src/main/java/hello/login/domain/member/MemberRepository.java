@@ -9,7 +9,7 @@ import java.util.*;
 @Repository
 public class MemberRepository {
 
-    private static Map<Long, Member> store = new HashMap<>(); // static 사용
+    private static Map<Long, Member> store = new HashMap<>();
     private static long sequence = 0L; // static 사용
 
     public Member save(Member member) {
@@ -22,6 +22,16 @@ public class MemberRepository {
     public Member findById(Long id) {
         return store.get(id);
     }
+
+//    public Member findByLoginId(String loginId) {
+//        List<Member> all = findAll();
+//        for (Member member : all) {
+//            if (member.getLoginId().equals(loginId)) {
+//                return member;
+//            }
+//        }
+//        return null;
+//    }
 
     public Optional<Member> findByLoginId(String loginId) {
         return findAll().stream()
