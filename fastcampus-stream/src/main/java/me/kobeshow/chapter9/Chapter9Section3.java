@@ -25,14 +25,19 @@ public class Chapter9Section3 {
                         new OrderLine().setAmount(BigDecimal.valueOf(2000))
                 ));
 
-        List<Function<Order, Order>> priceProcessor = getPriceProcessor(unprocessedOrder);
-        Function<Order, Order> mergedPriceProcessors = priceProcessor.stream().reduce(Function.identity(), Function::andThen);
+        List<Function<Order, Order>> priceProcessors = getPriceProcessors();
+
+        Function<Order, Order> mergedPriceProcessors = priceProcessors.stream()
+                .reduce(Function.identity(), Function::andThen);
 
         Order processedOrder = mergedPriceProcessors.apply(unprocessedOrder);
         System.out.println(processedOrder);
     }
 
-    public static List<Function<Order, Order>> getPriceProcessor(Order order) {
-        return Arrays.asList(new OrderLineAggregationPriceProcessor(), new TaxPriceProcessor(new BigDecimal("9.375")));
+    public static List<Function<Order, Order>> getPriceProcessors() {
+        return Arrays.asList(
+                new OrderLineAggregationPriceProcessor(),
+                new TaxPriceProcessor(new BigDecimal("9.375"))
+        );
     }
 }

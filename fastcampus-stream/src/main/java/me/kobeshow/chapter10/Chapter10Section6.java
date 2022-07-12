@@ -7,7 +7,7 @@ import me.kobeshow.chapter9.model.OrderLine;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-import static me.kobeshow.chapter10.model.Order.OrderStatus;
+import static me.kobeshow.chapter10.model.Order.*;
 
 public class Chapter10Section6 {
     public static void main(String[] args) {
@@ -21,8 +21,7 @@ public class Chapter10Section6 {
         OrderProcessStep setOrderAmountStep = new OrderProcessStep(order -> {
             if (order.getStatus() == OrderStatus.IN_PROGRESS) {
                 System.out.println("Setting amount of order " + order.getId());
-                order.setAmount(order.getOrderLines().stream()
-                        .map(OrderLine::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
+                order.setAmount(order.getOrderLines().stream().map(OrderLine::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
             }
         });
 
@@ -48,7 +47,7 @@ public class Chapter10Section6 {
             }
         });
 
-        OrderProcessStep completeProcesingOrderStep = new OrderProcessStep(order -> {
+        OrderProcessStep completeProcessingOrderStep = new OrderProcessStep(order -> {
             if (order.getStatus() == OrderStatus.PROCESSED) {
                 System.out.println("Finished processing order " + order.getId());
             }
@@ -59,7 +58,7 @@ public class Chapter10Section6 {
                 .setNext(verifyOrderStep)
                 .setNext(processPaymentStep)
                 .setNext(handleErrorStep)
-                .setNext(completeProcesingOrderStep);
+                .setNext(completeProcessingOrderStep);
 
         Order order = new Order()
                 .setId(1001L)

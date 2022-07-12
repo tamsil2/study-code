@@ -6,7 +6,7 @@ public class InternalUserService extends AbstractUserService {
 
     @Override
     protected boolean validateUser(User user) {
-        System.out.println("validating internal user " + user.getName());
+        System.out.println("Validating internal user " + user.getName());
         return true;
     }
 

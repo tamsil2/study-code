@@ -25,6 +25,6 @@ public class OrderProcessStep {
     public void process(Order order) {
         processOrder.accept(order);
         Optional.ofNullable(next)
-                .ifPresent(nextStep -> next.process(order));
+                .ifPresent(nextStep -> nextStep.process(order));
     }
 }

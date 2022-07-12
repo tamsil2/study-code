@@ -15,7 +15,6 @@ public class Chapter10Section5 {
                     builder.isVerified = false;
                     builder.friendUserIds = Arrays.asList(201, 202, 203, 204, 211, 212, 213, 214);
                 }).build();
-
         UserService userService = new UserService();
         InternalUserService internalUserService = new InternalUserService();
 
@@ -27,10 +26,7 @@ public class Chapter10Section5 {
                     System.out.println("Validating user " + user.getName());
                     return user.getName() != null && user.getEmailAddress().isPresent();
                 },
-                user -> {
-                    System.out.println("Writing user " + user.getName() + " to DB");
-                }
-        );
+                user -> System.out.println("Writing user " + user.getName() + " to DB"));
         userServiceInFunctionalWay.createUser(alice);
     }
 }

@@ -20,7 +20,6 @@ public class User {
         this.emailAddress = builder.emailAddress;
         this.isVerified = builder.isVerified;
         this.createdAt = builder.createdAt;
-        this.friendUserIds = builder.friendUserIds;
     }
 
     public int getId() {
